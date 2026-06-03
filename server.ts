@@ -898,8 +898,11 @@ async function handleServeHtml(req: any, res: any, meta: PageMetadata) {
   <meta name="twitter:image" content="${safeImg}" />
   `;
 
-  // Ganti tag <title> di index.html dengan meta tags lengkap kita
-  if (html.includes('<title>')) {
+  // Ganti tag placeholder dan title di index.html dengan meta tags lengkap kita
+  if (html.includes('<!-- META_TAGS_PLACEHOLDER -->')) {
+    html = html.replace(/<title>.*?<\/title>/, '');
+    html = html.replace('<!-- META_TAGS_PLACEHOLDER -->', metaTags);
+  } else if (html.includes('<title>')) {
     html = html.replace(/<title>.*?<\/title>/, metaTags);
   } else {
     html = html.replace('</head>', `${metaTags}\n</head>`);
@@ -1035,8 +1038,31 @@ async function startServer() {
     // Serve static compiled UI files in production environment
     const distPath = path.resolve(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(distPath, 'index.html'));
+    app.get('*', async (req, res, next) => {
+      try {
+        const protocol = (req.secure || req.headers['x-forwarded-proto'] === 'https') ? 'https' : 'http';
+        const host = req.get('host');
+        let domainUrl = process.env.APP_URL;
+        if (!domainUrl || domainUrl === 'MY_APP_URL' || domainUrl.includes('MY_APP_URL') || !domainUrl.startsWith('http')) {
+          domainUrl = `${protocol}://${host}`;
+        }
+        domainUrl = domainUrl.replace(/\/+$/, '');
+        
+        const siteTitleCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_title'`);
+        const siteTaglineCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_tagline'`);
+        const siteTitle = siteTitleCheck ? siteTitleCheck.value : 'Lintas Poin';
+        const siteTagline = siteTaglineCheck ? siteTaglineCheck.value : 'Redaksi Independen Lintas Poin • Media Siber & Pers';
+        
+        const metadata: PageMetadata = {
+          title: siteTitle,
+          description: siteTagline,
+          imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200',
+          url: domainUrl,
+        };
+        await handleServeHtml(req, res, metadata);
+      } catch (err) {
+        res.sendFile(path.resolve(distPath, 'index.html'));
+      }
     });
     console.log('Serving production bundles static folder from /dist');
   }
