@@ -874,11 +874,19 @@ async function handleServeHtml(req: any, res: any, meta: PageMetadata) {
   <title>${safeTitle}</title>
   <meta name="description" content="${safeDesc}" />
   
+  <!-- Schema.org markup for Google+ / Search -->
+  <meta itemprop="name" content="${safeTitle}">
+  <meta itemprop="description" content="${safeDesc}">
+  <meta itemprop="image" content="${safeImg}">
+  
   <!-- Open Graph / Facebook / WhatsApp -->
   <meta property="og:type" content="article" />
   <meta property="og:title" content="${safeTitle}" />
   <meta property="og:description" content="${safeDesc}" />
   <meta property="og:image" content="${safeImg}" />
+  <meta property="og:image:secure_url" content="${safeImg}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="${safeTitle}" />
   <meta property="og:url" content="${safeUrl}" />
   <meta property="og:site_name" content="Lintas Poin" />
@@ -917,20 +925,23 @@ app.get('/article/:slug', async (req, res, next) => {
     }
 
     // Tentukan URL absolut untuk artikel dan gambar
-    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const protocol = (req.secure || req.headers['x-forwarded-proto'] === 'https') ? 'https' : 'http';
     const host = req.get('host');
-    const domainUrl = process.env.APP_URL || `${protocol}://${host}`;
     
-    const articleUrl = `${domainUrl}/article/${article.slug}`;
+    let domainUrl = process.env.APP_URL;
+    if (!domainUrl || domainUrl === 'MY_APP_URL' || domainUrl.includes('MY_APP_URL') || !domainUrl.startsWith('http')) {
+      domainUrl = `${protocol}://${host}`;
+    }
+    domainUrl = domainUrl.replace(/\/+$/, '');
+    
+    const cleanSlug = article.slug.startsWith('/') ? article.slug.substring(1) : article.slug;
+    const articleUrl = `${domainUrl}/article/${cleanSlug}`;
     
     // Pastikan image_url adalah absolut
     let imageUrl = article.image_url;
     if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
-      if (imageUrl.startsWith('/')) {
-        imageUrl = `${domainUrl}${imageUrl}`;
-      } else {
-        imageUrl = `${domainUrl}/${imageUrl}`;
-      }
+      const cleanImgPath = imageUrl.startsWith('/') ? imageUrl.substring(1) : imageUrl;
+      imageUrl = `${domainUrl}/${cleanImgPath}`;
     }
 
     // Batasi teks deskripsi agar ringkas (maksimal 150 karakter untuk preview)
@@ -965,9 +976,14 @@ app.get(['/', '/admin'], async (req, res, next) => {
     const siteTitle = siteTitleCheck ? siteTitleCheck.value : 'Lintas Poin';
     const siteTagline = siteTaglineCheck ? siteTaglineCheck.value : 'Redaksi Independen Lintas Poin • Media Siber & Pers';
 
-    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const protocol = (req.secure || req.headers['x-forwarded-proto'] === 'https') ? 'https' : 'http';
     const host = req.get('host');
-    const domainUrl = process.env.APP_URL || `${protocol}://${host}`;
+    
+    let domainUrl = process.env.APP_URL;
+    if (!domainUrl || domainUrl === 'MY_APP_URL' || domainUrl.includes('MY_APP_URL') || !domainUrl.startsWith('http')) {
+      domainUrl = `${protocol}://${host}`;
+    }
+    domainUrl = domainUrl.replace(/\/+$/, '');
 
     // Kita bisa cari artikel unggulan pertama (featured) untuk dijadikan gambar banner pembuka induk
     const featuredArticle = await dbGet(`
@@ -984,11 +1000,8 @@ app.get(['/', '/admin'], async (req, res, next) => {
     }
 
     if (bannerUrl && !bannerUrl.startsWith('http://') && !bannerUrl.startsWith('https://')) {
-      if (bannerUrl.startsWith('/')) {
-        bannerUrl = `${domainUrl}${bannerUrl}`;
-      } else {
-        bannerUrl = `${domainUrl}/${bannerUrl}`;
-      }
+      const cleanBannerPath = bannerUrl.startsWith('/') ? bannerUrl.substring(1) : bannerUrl;
+      bannerUrl = `${domainUrl}/${cleanBannerPath}`;
     }
 
     const finalBanner = bannerUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';
