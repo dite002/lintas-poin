@@ -29,7 +29,13 @@ export default function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      setPath(window.location.pathname);
+      const currentPath = window.location.pathname;
+      setPath(currentPath);
+      if (currentPath.startsWith('/article/')) {
+        setSelectedArticleSlug(currentPath.substring('/article/'.length));
+      } else {
+        setSelectedArticleSlug(null);
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => {
@@ -49,7 +55,13 @@ export default function App() {
   const [articles, setArticles] = useState<ArticleWithCategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedArticleSlug, setSelectedArticleSlug] = useState<string | null>(null);
+  const [selectedArticleSlug, setSelectedArticleSlug] = useState<string | null>(() => {
+    const currentPath = window.location.pathname;
+    if (currentPath.startsWith('/article/')) {
+      return currentPath.substring('/article/'.length);
+    }
+    return null;
+  });
 
   // Read State details
   const [detailArticle, setDetailArticle] = useState<ArticleWithCategory | null>(null);
@@ -145,6 +157,8 @@ export default function App() {
   }, [selectedArticleSlug]);
 
   const handleBackToGallery = () => {
+    window.history.pushState({}, '', '/');
+    setPath('/');
     setSelectedArticleSlug(null);
     setDetailArticle(null);
     setDetailComments([]);
@@ -153,6 +167,9 @@ export default function App() {
   };
 
   const handleArticleClick = (slug: string) => {
+    const newPath = `/article/${slug}`;
+    window.history.pushState({}, '', newPath);
+    setPath(newPath);
     setSelectedArticleSlug(slug);
   };
 

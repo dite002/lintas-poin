@@ -821,6 +821,192 @@ app.post('/api/db/reset', async (req, res) => {
   }
 });
 
+let globalViteInstance: any = null;
+
+interface PageMetadata {
+  title: string;
+  description: string;
+  imageUrl: string;
+  url: string;
+}
+
+async function handleServeHtml(req: any, res: any, meta: PageMetadata) {
+  let templatePath = '';
+  let html = '';
+  const isProd = process.env.NODE_ENV === "production";
+
+  if (!isProd) {
+    templatePath = path.resolve(process.cwd(), 'index.html');
+    if (fs.existsSync(templatePath)) {
+      html = fs.readFileSync(templatePath, 'utf-8');
+      if (globalViteInstance) {
+        html = await globalViteInstance.transformIndexHtml(req.originalUrl, html);
+      }
+    }
+  } else {
+    templatePath = path.resolve(process.cwd(), 'dist', 'index.html');
+    if (fs.existsSync(templatePath)) {
+      html = fs.readFileSync(templatePath, 'utf-8');
+    }
+  }
+
+  if (!html) {
+    return res.status(500).send('HTML template not found');
+  }
+
+  // Escape special chars to prevent syntax issues
+  const escapeHtml = (text: string) => {
+    return (text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+
+  const safeTitle = escapeHtml(meta.title);
+  const safeDesc = escapeHtml(meta.description);
+  const safeImg = meta.imageUrl;
+  const safeUrl = meta.url;
+
+  // Build the rich social media preview metadata
+  const metaTags = `
+  <title>${safeTitle}</title>
+  <meta name="description" content="${safeDesc}" />
+  
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="${safeTitle}" />
+  <meta property="og:description" content="${safeDesc}" />
+  <meta property="og:image" content="${safeImg}" />
+  <meta property="og:image:alt" content="${safeTitle}" />
+  <meta property="og:url" content="${safeUrl}" />
+  <meta property="og:site_name" content="Lintas Poin" />
+  
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${safeTitle}" />
+  <meta name="twitter:description" content="${safeDesc}" />
+  <meta name="twitter:image" content="${safeImg}" />
+  `;
+
+  // Ganti tag <title> di index.html dengan meta tags lengkap kita
+  if (html.includes('<title>')) {
+    html = html.replace(/<title>.*?<\/title>/, metaTags);
+  } else {
+    html = html.replace('</head>', `${metaTags}\n</head>`);
+  }
+
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(html);
+}
+
+// Tangani rute detail berita khusus agar memiliki metadata WhatsApp preview
+app.get('/article/:slug', async (req, res, next) => {
+  const { slug } = req.params;
+  try {
+    const article = await dbGet(`
+      SELECT a.*, c.name as category_name
+      FROM articles a
+      JOIN categories c ON a.category_id = c.id
+      WHERE a.slug = ?
+    `, [slug]);
+
+    if (!article) {
+      return next(); // Jika tidak ada artikel, teruskan ke default router
+    }
+
+    // Tentukan URL absolut untuk artikel dan gambar
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const host = req.get('host');
+    const domainUrl = process.env.APP_URL || `${protocol}://${host}`;
+    
+    const articleUrl = `${domainUrl}/article/${article.slug}`;
+    
+    // Pastikan image_url adalah absolut
+    let imageUrl = article.image_url;
+    if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+      if (imageUrl.startsWith('/')) {
+        imageUrl = `${domainUrl}${imageUrl}`;
+      } else {
+        imageUrl = `${domainUrl}/${imageUrl}`;
+      }
+    }
+
+    // Batasi teks deskripsi agar ringkas (maksimal 150 karakter untuk preview)
+    const rawSummary = article.summary || article.content || '';
+    const cleanSummary = rawSummary
+      .replace(/[#*`>_\-]/g, '') // bersihkan markdown
+      .replace(/\s+/g, ' ')
+      .trim()
+      .substring(0, 150) + (rawSummary.length > 150 ? '...' : '');
+
+    const metadata: PageMetadata = {
+      title: `${article.title} - Lintas Poin`,
+      description: cleanSummary,
+      imageUrl: imageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200',
+      url: articleUrl,
+    };
+
+    await handleServeHtml(req, res, metadata);
+  } catch (error) {
+    console.error('Error serving article with metadata:', error);
+    next();
+  }
+});
+
+// Tangani rute beranda / agar metadata WhatsApp preview untuk link induk muncul
+app.get(['/', '/admin'], async (req, res, next) => {
+  try {
+    // Ambil setting site_title dan site_tagline
+    const siteTitleCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_title'`);
+    const siteTaglineCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_tagline'`);
+    
+    const siteTitle = siteTitleCheck ? siteTitleCheck.value : 'Lintas Poin';
+    const siteTagline = siteTaglineCheck ? siteTaglineCheck.value : 'Redaksi Independen Lintas Poin • Media Siber & Pers';
+
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    const host = req.get('host');
+    const domainUrl = process.env.APP_URL || `${protocol}://${host}`;
+
+    // Kita bisa cari artikel unggulan pertama (featured) untuk dijadikan gambar banner pembuka induk
+    const featuredArticle = await dbGet(`
+      SELECT image_url FROM articles 
+      WHERE is_featured = 1 
+      ORDER BY created_at DESC 
+      LIMIT 1
+    `);
+
+    let bannerUrl = featuredArticle ? featuredArticle.image_url : null;
+    if (!bannerUrl) {
+      const latestArticle = await dbGet(`SELECT image_url FROM articles ORDER BY created_at DESC LIMIT 1`);
+      bannerUrl = latestArticle ? latestArticle.image_url : null;
+    }
+
+    if (bannerUrl && !bannerUrl.startsWith('http://') && !bannerUrl.startsWith('https://')) {
+      if (bannerUrl.startsWith('/')) {
+        bannerUrl = `${domainUrl}${bannerUrl}`;
+      } else {
+        bannerUrl = `${domainUrl}/${bannerUrl}`;
+      }
+    }
+
+    const finalBanner = bannerUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';
+
+    const metadata: PageMetadata = {
+      title: siteTitle,
+      description: siteTagline,
+      imageUrl: finalBanner,
+      url: domainUrl,
+    };
+
+    await handleServeHtml(req, res, metadata);
+  } catch (error) {
+    console.error('Error serving homepage with metadata:', error);
+    next();
+  }
+});
+
 // Serve frontend routing and build integration
 async function startServer() {
   // Vite integration middleware in non-production
@@ -829,6 +1015,7 @@ async function startServer() {
       server: { middlewareMode: true },
       appType: "spa",
     });
+    globalViteInstance = vite;
     app.use(vite.middlewares);
     console.log('Vite development server middleware loaded.');
   } else {
