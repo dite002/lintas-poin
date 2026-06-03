@@ -47,7 +47,7 @@ export default function Navbar({
             </div>
           </div>
 
-          {currentRole === 'admin' && (
+          {currentRole === 'admin' && currentUser && (
             <div className="flex items-center gap-2 sm:hidden">
               <button
                 onClick={() => setShowSettings(!showSettings)}
@@ -78,7 +78,7 @@ export default function Navbar({
           )}
 
           {/* Profile & Settings Option */}
-          {currentRole === 'admin' && (
+          {currentRole === 'admin' && currentUser && (
             <div className="relative hidden sm:block">
               <button
                 onClick={() => setShowSettings(!showSettings)}
@@ -133,19 +133,23 @@ export default function Navbar({
                         </div>
                       )}
                       
-                      <div className="my-3 border-t border-stone-100"></div>
-                      <button
-                        disabled={isResetting}
-                        onClick={() => {
-                          if (confirm('Atur ulang seluruh database ke data asal demo? Tindakan ini akan menghapus semua berita dan akun buatan Anda.')) {
-                            onResetDb();
-                            setShowSettings(false);
-                          }
-                        }}
-                        className="w-full rounded-lg bg-red-50 hover:bg-red-100 border border-red-100 text-red-600 px-3 py-2 font-sans text-xs font-semibold tracking-tight transition-all disabled:opacity-50"
-                      >
-                        {isResetting ? 'Mereset...' : 'Atur Ulang ke Data Demo'}
-                      </button>
+                      {currentUser?.role === 'developer' && (
+                        <>
+                          <div className="my-3 border-t border-stone-100"></div>
+                          <button
+                            disabled={isResetting}
+                            onClick={() => {
+                              if (confirm('Atur ulang seluruh database ke data asal demo? Tindakan ini akan menghapus semua berita dan akun buatan Anda.')) {
+                                onResetDb();
+                                setShowSettings(false);
+                              }
+                            }}
+                            className="w-full rounded-lg bg-red-50 hover:bg-red-100 border border-red-100 text-red-600 px-3 py-2 font-sans text-xs font-semibold tracking-tight transition-all disabled:opacity-50"
+                          >
+                            {isResetting ? 'Mereset...' : 'Atur Ulang ke Data Demo'}
+                          </button>
+                        </>
+                      )}
                     </motion.div>
                   </>
                 )}
@@ -187,18 +191,20 @@ export default function Navbar({
                 <span>Media &amp; Berita Nusantara</span>
               </div>
             )}
-            <button
-              disabled={isResetting}
-              onClick={() => {
-                if (confirm('Atur ulang seluruh database ke data demo?')) {
-                  onResetDb();
-                  setShowSettings(false);
-                }
-              }}
-              className="mt-1 w-full rounded-lg bg-red-600 hover:bg-red-700 text-white px-3 py-2 font-sans text-xs font-semibold transition-all disabled:opacity-50"
-            >
-              {isResetting ? 'Mereset...' : 'Reset Database ke Demo Default'}
-            </button>
+            {currentUser?.role === 'developer' && (
+              <button
+                disabled={isResetting}
+                onClick={() => {
+                  if (confirm('Atur ulang seluruh database ke data demo?')) {
+                    onResetDb();
+                    setShowSettings(false);
+                  }
+                }}
+                className="mt-1 w-full rounded-lg bg-red-600 hover:bg-red-700 text-white px-3 py-2 font-sans text-xs font-semibold transition-all disabled:opacity-50"
+              >
+                {isResetting ? 'Mereset...' : 'Reset Database ke Demo Default'}
+              </button>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

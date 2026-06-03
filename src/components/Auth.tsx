@@ -14,6 +14,7 @@ export default function Auth({ onAuthSuccess, isRegisterMode, onCheckStatus }: A
   const [fullname, setFullname] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'developer' | 'super_admin' | 'redaktur'>('developer');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +41,8 @@ export default function Auth({ onAuthSuccess, isRegisterMode, onCheckStatus }: A
         const res = await api.registerFirstUser({
           fullname: fullname.trim(),
           username: username.trim(),
-          password: password.trim()
+          password: password.trim(),
+          role
         });
         if (res.success && res.user) {
           onAuthSuccess(res.user);
@@ -99,24 +101,26 @@ export default function Auth({ onAuthSuccess, isRegisterMode, onCheckStatus }: A
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {isRegisterMode && (
-            <div className="space-y-1.5">
-              <label className="font-sans text-xs font-bold text-stone-700 uppercase tracking-wider block">
-                Nama Lengkap Anda
-              </label>
-              <div className="relative">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-stone-400">
-                  <User className="h-4 w-4" />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Contoh: Danu Kusuma"
-                  value={fullname}
-                  onChange={(e) => setFullname(e.target.value)}
-                  className="w-full rounded-lg border border-stone-200 bg-white py-2 pl-9 pr-4 font-sans text-sm text-stone-900 focus:border-stone-800 focus:ring-1 focus:ring-stone-800 focus:outline-none transition-all"
-                  required
-                />
+            <>
+              <div className="space-y-1.5">
+                <label className="font-sans text-xs font-bold text-stone-700 uppercase tracking-wider block">
+                  Nama Lengkap Anda
+                </label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-stone-400">
+                    <User className="h-4 w-4" />
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Contoh: Danu Kusuma"
+                    value={fullname}
+                    onChange={(e) => setFullname(e.target.value)}
+                    className="w-full rounded-lg border border-stone-200 bg-white py-2 pl-9 pr-4 font-sans text-sm text-stone-900 focus:border-stone-800 focus:ring-1 focus:ring-stone-800 focus:outline-none transition-all"
+                    required
+                  />
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           <div className="space-y-1.5">

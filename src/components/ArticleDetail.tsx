@@ -61,6 +61,30 @@ export default function ArticleDetail({
       const block = rawBlock.trim();
       if (!block) return null;
 
+      // Handle Image Markdown block: ![Deskripsi](src URL atau data URL)
+      if (block.startsWith('![') && block.includes('](')) {
+        const match = block.match(/!\[(.*?)\]\((.*?)\)/);
+        if (match) {
+          const altText = match[1];
+          const srcUrl = match[2];
+          return (
+            <div key={idx} className="my-6 flex flex-col items-center">
+              <img
+                src={srcUrl}
+                alt={altText}
+                referrerPolicy="no-referrer"
+                className="w-full max-h-[500px] object-cover rounded-xl border border-stone-200 shadow-xs"
+              />
+              {altText && (
+                <span className="block text-center text-xs text-stone-500 font-sans mt-2 font-medium bg-stone-50 px-3 py-1 rounded border border-stone-200/50">
+                  📷 {altText}
+                </span>
+              )}
+            </div>
+          );
+        }
+      }
+
       // Handle Headers H3
       if (block.startsWith('### ')) {
         return (

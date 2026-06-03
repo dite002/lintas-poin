@@ -87,9 +87,39 @@ async function initDatabase() {
         username TEXT UNIQUE NOT NULL,
         fullname TEXT NOT NULL,
         password TEXT NOT NULL,
+        role TEXT DEFAULT 'redaktur',
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    await dbRun(`
+      CREATE TABLE IF NOT EXISTS settings (
+        key TEXT PRIMARY KEY,
+        value TEXT
+      )
+    `);
+
+    // Run migration safely to add role column to existing databases
+    try {
+      await dbRun(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'redaktur'`);
+      console.log('Successfully completed database schema migration: added role column to users');
+    } catch (e) {
+      // Column might already exist, ignore safely
+    }
+
+    // Seed default settings if they are missing
+    try {
+      const siteTitleCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_title'`);
+      if (!siteTitleCheck) {
+        await dbRun(`INSERT INTO settings (key, value) VALUES ('site_title', 'Edisi Utama')`);
+      }
+      const siteTaglineCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_tagline'`);
+      if (!siteTaglineCheck) {
+        await dbRun(`INSERT INTO settings (key, value) VALUES ('site_tagline', 'Redaksi Independen Lintas Poin • Media Siber & Pers')`);
+      }
+    } catch (e) {
+      console.error('Error seeding site settings:', e);
+    }
 
     // Verify if database needs seeding
     const catCheck = await dbGet(`SELECT COUNT(*) as count FROM categories`);
@@ -282,6 +312,9 @@ initDatabase();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// Serve local uploads folder statically
+app.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
+
 // Utility function to convert title strings into perfect URL slugs
 function slugify(text: string) {
   return text
@@ -306,6 +339,39 @@ app.get('/api/categories', async (req, res) => {
       ORDER BY c.name ASC
     `);
     res.json(categories);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// API: Get site settings
+app.get('/api/settings', async (req, res) => {
+  try {
+    const rows = await dbAll(`SELECT key, value FROM settings`);
+    const settingsObj: Record<string, string> = {};
+    rows.forEach((r) => {
+      settingsObj[r.key] = r.value;
+    });
+    // Ensure default fallback if they somehow aren't in SQLite
+    if (!settingsObj.site_title) settingsObj.site_title = 'Edisi Utama';
+    if (!settingsObj.site_tagline) settingsObj.site_tagline = 'Redaksi Independen Lintas Poin • Media Siber & Pers';
+    res.json(settingsObj);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// API: Update site settings
+app.post('/api/settings', async (req, res) => {
+  const { site_title, site_tagline } = req.body;
+  if (!site_title || !site_tagline) {
+    return res.status(400).json({ error: 'Nama Edisi/Situs dan Tagline wajib diisi' });
+  }
+
+  try {
+    await dbRun(`INSERT OR REPLACE INTO settings (key, value) VALUES ('site_title', ?)`, [site_title.trim()]);
+    await dbRun(`INSERT OR REPLACE INTO settings (key, value) VALUES ('site_tagline', ?)`, [site_tagline.trim()]);
+    res.json({ success: true, site_title, site_tagline });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -547,6 +613,54 @@ app.post('/api/articles/:id/comments', async (req, res) => {
   }
 });
 
+// API: Local image upload to disk
+app.post('/api/upload', async (req, res) => {
+  const { filename, base64 } = req.body;
+  if (!base64) {
+    return res.status(400).json({ error: 'Data gambar wajib disertakan' });
+  }
+
+  try {
+    const uploadDir = path.resolve(process.cwd(), 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    // Parse base64
+    const matches = base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    let imageBuffer: Buffer;
+    let extension = 'jpg';
+
+    if (matches && matches.length === 3) {
+      const mimeType = matches[1];
+      const base64Data = matches[2];
+      imageBuffer = Buffer.from(base64Data, 'base64');
+      const extParts = mimeType.split('/');
+      if (extParts.length === 2) {
+        extension = extParts[1];
+      }
+    } else {
+      imageBuffer = Buffer.from(base64, 'base64');
+    }
+
+    // Generate smart unique file name
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const cleanOrigName = filename
+      ? filename.replace(/[^a-z0-9]/gi, '_').toLowerCase()
+      : 'pic';
+    
+    const finalFilename = `photo_${timestamp}_${randomStr}.${extension}`;
+    const filePath = path.join(uploadDir, finalFilename);
+
+    fs.writeFileSync(filePath, imageBuffer);
+
+    res.json({ success: true, url: `/uploads/${finalFilename}` });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // ==========================================
 // USER AUTHENTICATION & MANAGEMENT ENDPOINTS
 // ==========================================
@@ -575,12 +689,13 @@ app.post('/api/users/register-first', async (req, res) => {
       return res.status(400).json({ error: 'Registrasi mandiri ditutup. Silakan mendaftar melalui akun Redaksi Admin yang terdaftar.' });
     }
 
+    const assignedRole = 'developer'; // Make developer by default for the first user
     const { lastID } = await dbRun(`
-      INSERT INTO users (username, fullname, password)
-      VALUES (?, ?, ?)
-    `, [username.trim().toLowerCase(), fullname.trim(), password]);
+      INSERT INTO users (username, fullname, password, role)
+      VALUES (?, ?, ?, ?)
+    `, [username.trim().toLowerCase(), fullname.trim(), password, assignedRole]);
 
-    const newUser = await dbGet(`SELECT id, username, fullname FROM users WHERE id = ?`, [lastID]);
+    const newUser = await dbGet(`SELECT id, username, fullname, role FROM users WHERE id = ?`, [lastID]);
     res.json({ success: true, user: newUser });
   } catch (error: any) {
     if (error.message && error.message.includes('UNIQUE')) {
@@ -600,7 +715,7 @@ app.post('/api/users/login', async (req, res) => {
   }
 
   try {
-    const user = await dbGet(`SELECT id, username, fullname, password FROM users WHERE username = ?`, [username.trim().toLowerCase()]);
+    const user = await dbGet(`SELECT id, username, fullname, password, role FROM users WHERE username = ?`, [username.trim().toLowerCase()]);
     if (!user || user.password !== password) {
       return res.status(401).json({ error: 'Username atau Password salah' });
     }
@@ -610,7 +725,8 @@ app.post('/api/users/login', async (req, res) => {
       user: {
         id: user.id,
         username: user.username,
-        fullname: user.fullname
+        fullname: user.fullname,
+        role: user.role || 'redaktur'
       }
     });
   } catch (error: any) {
@@ -620,7 +736,7 @@ app.post('/api/users/login', async (req, res) => {
 
 // Admin registers other admin accounts
 app.post('/api/users/create', async (req, res) => {
-  const { username, fullname, password } = req.body;
+  const { username, fullname, password, role, creator_role } = req.body;
 
   if (!username || !fullname || !password || username.trim() === '' || fullname.trim() === '' || password.trim() === '') {
     return res.status(400).json({ error: 'Username, Nama Lengkap, dan Password wajib diisi' });
@@ -632,10 +748,15 @@ app.post('/api/users/create', async (req, res) => {
       return res.status(400).json({ error: 'Username tersebut sudah terdaftar' });
     }
 
+    if (role === 'developer' && creator_role !== 'developer') {
+      return res.status(403).json({ error: 'Hanya akun Developer yang dapat mendaftarkan akun Developer baru' });
+    }
+
+    const assignedRole = role || 'redaktur';
     await dbRun(`
-      INSERT INTO users (username, fullname, password)
-      VALUES (?, ?, ?)
-    `, [username.trim().toLowerCase(), fullname.trim(), password]);
+      INSERT INTO users (username, fullname, password, role)
+      VALUES (?, ?, ?, ?)
+    `, [username.trim().toLowerCase(), fullname.trim(), password, assignedRole]);
 
     res.json({ success: true, message: 'Akun redaktur baru berhasil terdaftar' });
   } catch (error: any) {
@@ -646,7 +767,7 @@ app.post('/api/users/create', async (req, res) => {
 // Get all admin users list
 app.get('/api/users', async (req, res) => {
   try {
-    const users = await dbAll(`SELECT id, username, fullname, created_at FROM users ORDER BY created_at DESC`);
+    const users = await dbAll(`SELECT id, username, fullname, role, created_at FROM users ORDER BY created_at DESC`);
     res.json(users);
   } catch (error: any) {
     res.status(500).json({ error: error.message });

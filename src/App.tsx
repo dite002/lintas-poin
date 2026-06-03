@@ -59,6 +59,10 @@ export default function App() {
   // Administrative stats state
   const [stats, setStats] = useState<DashboardStats | null>(null);
 
+  // Site Configurations settings
+  const [siteTitle, setSiteTitle] = useState<string>('Edisi Utama');
+  const [siteTagline, setSiteTagline] = useState<string>('Redaksi Independen Lintas Poin • Media Siber & Pers');
+
   // Global UI Spinners
   const [loading, setLoading] = useState<boolean>(true);
   const [isResetting, setIsResetting] = useState<boolean>(false);
@@ -84,6 +88,15 @@ export default function App() {
 
       setCategories(fetchedCats);
       setArticles(fetchedArts);
+
+      // Load Site Settings
+      try {
+        const settings = await api.getSettings();
+        setSiteTitle(settings.site_title);
+        setSiteTagline(settings.site_tagline);
+      } catch (settingsErr) {
+        console.error('Gagal mengambil pengaturan:', settingsErr);
+      }
 
       if (role === 'admin' && currentUser) {
         const statsData = await api.getDashboardStats();
@@ -208,6 +221,15 @@ export default function App() {
     return res;
   };
 
+  const handleUpdateSettings = async (title: string, tagline: string) => {
+    const res = await api.updateSettings(title, tagline);
+    if (res.success) {
+      setSiteTitle(res.site_title);
+      setSiteTagline(res.site_tagline);
+    }
+    return res;
+  };
+
   const handleRefreshStats = async () => {
     try {
       const statsData = await api.getDashboardStats();
@@ -268,6 +290,10 @@ export default function App() {
                   onDeleteArticle={handleDeleteArticle}
                   onCreateCategory={handleCreateCategory}
                   onDeleteCategory={handleDeleteCategory}
+                  currentUser={currentUser}
+                  siteTitle={siteTitle}
+                  siteTagline={siteTagline}
+                  onUpdateSettings={handleUpdateSettings}
                 />
               ) : (
                 <Auth
@@ -323,10 +349,10 @@ export default function App() {
               <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-stone-800 pb-4 gap-4">
                 <div>
                   <h1 className="font-serif text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight leading-none uppercase">
-                    Edisi Utama
+                    {siteTitle}
                   </h1>
                   <span className="font-mono text-[10px] sm:text-xs text-stone-500 font-semibold block mt-1.5 uppercase">
-                    Redaksi Independen Lintas Poin • Media Siber & Pers
+                    {siteTagline}
                   </span>
                 </div>
                 <div className="text-right sm:text-right flex items-center sm:block">

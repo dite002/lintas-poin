@@ -41,6 +41,7 @@ export interface User {
   id: number;
   username: string;
   fullname: string;
+  role: 'developer' | 'super_admin' | 'redaktur';
   created_at?: string;
 }
 

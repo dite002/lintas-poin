@@ -201,3 +201,38 @@ export async function getAllUsers(): Promise<User[]> {
   }
   return res.json();
 }
+
+export async function uploadImage(filename: string, base64: string): Promise<{ success: boolean; url: string }> {
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ filename, base64 }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Gagal mengunggah foto');
+  }
+  return res.json();
+}
+
+export async function getSettings(): Promise<{ site_title: string; site_tagline: string }> {
+  const res = await fetch('/api/settings');
+  if (!res.ok) {
+    throw new Error('Gagal memuat pengaturan situs');
+  }
+  return res.json();
+}
+
+export async function updateSettings(site_title: string, site_tagline: string): Promise<{ success: boolean; site_title: string; site_tagline: string }> {
+  const res = await fetch('/api/settings', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ site_title, site_tagline }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Gagal memperbarui pengaturan situs');
+  }
+  return res.json();
+}
+
