@@ -5,7 +5,7 @@ import sqlite3 from 'sqlite3';
 import { createServer as createViteServer } from 'vite';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 // Setup SQLite local database connection
 const dbFile = path.resolve(process.cwd(), 'database.sqlite');
