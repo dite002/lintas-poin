@@ -207,10 +207,7 @@ export default function Dashboard({
   };
 
   // Convert inline photo upload to server disk URL
-  const handleInlinePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const processAndUploadInlineFile = (file: File) => {
     if (file.size > 8 * 1024 * 1024) {
       alert('Berkas terlalu besar! Batas sela foto adalah 8MB.');
       return;
@@ -236,6 +233,13 @@ export default function Dashboard({
       setInlinePhotoLoading(false);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleInlinePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processAndUploadInlineFile(file);
+    }
   };
 
   // Safe and clean localized parser for Markdown preview
@@ -504,10 +508,7 @@ export default function Dashboard({
   };
 
   // Convert localized disk file upload to relative URL stored on server disk!
-  const handleLocalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const processAndUploadFile = (file: File) => {
     // Check size limit (max 8MB for upload)
     if (file.size > 8 * 1024 * 1024) {
       alert('File terlalu besar! Batas unggahan gambar adalah 8MB.');
@@ -536,6 +537,13 @@ export default function Dashboard({
       setFileLoading(false);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleLocalImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processAndUploadFile(file);
+    }
   };
 
   return (
@@ -997,16 +1005,7 @@ export default function Dashboard({
                           e.stopPropagation();
                           const file = e.dataTransfer.files?.[0];
                           if (file && file.type.startsWith('image/')) {
-                            // Programmatically trigger custom simulation or pass to handler
-                            const fileInput = fileInputRef.current;
-                            if (fileInput) {
-                              const dataTransfer = new DataTransfer();
-                              dataTransfer.items.add(file);
-                              fileInput.files = dataTransfer.files;
-                              // Manually trigger change event
-                              const event = new Event('change', { bubbles: true }) as any;
-                              fileInput.dispatchEvent(event);
-                            }
+                            processAndUploadFile(file);
                           }
                         }}
                         className="border-2 border-dashed border-stone-300 hover:border-stone-400 hover:bg-white rounded-lg p-4 text-center cursor-pointer transition-all duration-200"
@@ -1251,6 +1250,18 @@ export default function Dashboard({
                                 <button
                                   type="button"
                                   onClick={() => inlinePhotoFileInputRef.current?.click()}
+                                  onDragOver={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                  }}
+                                  onDrop={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    const file = e.dataTransfer.files?.[0];
+                                    if (file && file.type.startsWith('image/')) {
+                                      processAndUploadInlineFile(file);
+                                    }
+                                  }}
                                   className="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-stone-300 hover:border-amber-400 hover:bg-amber-50/5 p-3.5 font-sans text-center text-xs font-bold text-stone-600 cursor-pointer transition-all"
                                 >
                                   <Upload className="h-4 w-4 text-stone-400" />

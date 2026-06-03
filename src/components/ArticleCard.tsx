@@ -32,6 +32,10 @@ export default function ArticleCard({ article, onClick, index }: ArticleCardProp
             src={article.image_url}
             alt={article.title}
             referrerPolicy="no-referrer"
+            onError={(e) => {
+              (e.target as HTMLImageElement).onerror = null;
+              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';
+            }}
             className="h-full w-full object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
           />
           <div className="absolute top-3 left-3 flex gap-2">

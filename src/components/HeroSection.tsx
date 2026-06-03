@@ -33,6 +33,10 @@ export default function HeroSection({ articles, onArticleClick }: HeroSectionPro
           src={featured.image_url}
           alt={featured.title}
           referrerPolicy="no-referrer"
+          onError={(e) => {
+            (e.target as HTMLImageElement).onerror = null;
+            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';
+          }}
           className="h-full w-full object-cover transform hover:scale-[1.03] transition-transform duration-700"
         />
         <div className="absolute top-4 left-4">

@@ -211,6 +211,10 @@ export default function ArticleDetail({
           src={article.image_url}
           alt={article.title}
           referrerPolicy="no-referrer"
+          onError={(e) => {
+            (e.target as HTMLImageElement).onerror = null;
+            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200';
+          }}
           className="h-full w-full object-cover"
         />
       </div>
@@ -313,7 +317,7 @@ export default function ArticleDetail({
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   key={comment.id}
-                  className="p-4 border border-stone-150-100 bg-stone-50/20 rounded-xl"
+                  className="p-4 border border-stone-200/80 bg-stone-50/20 rounded-xl"
                 >
                   <div className="flex items-center justify-between gap-2 mb-1.5">
                     <span className="font-sans text-sm font-bold text-stone-900">
