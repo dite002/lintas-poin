@@ -3,6 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import sqlite3 from 'sqlite3';
 import { createServer as createViteServer } from 'vite';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
