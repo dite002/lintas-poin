@@ -6,3 +6,14 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Database
+database.sqlite
+database.sqlite-journal
+database.sqlite-shm
+database.sqlite-wal
+*.sqlite
+*.db
+
+# Uploads
+uploads/
