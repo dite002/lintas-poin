@@ -1,0 +1,6 @@
+{
+  "name": "Lintas Poin",
+  "description": "Aplikasi Web Media Berita dengan Database SQLite Lokal offline",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
