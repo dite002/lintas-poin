@@ -270,7 +270,7 @@ export default function App() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-stone-50/50 text-stone-900 selection:bg-stone-900 selection:text-white">
+    <div className="flex flex-col min-h-screen bg-slate-50/50 text-blue-900 selection:bg-orange-500 selection:text-white">
       {/* Centered navigation bar */}
       <Navbar
         currentRole={role}
@@ -337,8 +337,8 @@ export default function App() {
             >
               {detailLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-3">
-                  <Loader2 className="h-8 w-8 text-stone-800 animate-spin" />
-                  <p className="font-sans text-xs font-semibold text-stone-500">
+                  <Loader2 className="h-8 w-8 text-orange-600 animate-spin" />
+                  <p className="font-sans text-xs font-semibold text-slate-500">
                     Memuat rincian berita...
                   </p>
                 </div>
@@ -363,17 +363,17 @@ export default function App() {
               className="space-y-8"
             >
               {/* Publisher Banner Header */}
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-stone-800 pb-4 gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-blue-800 pb-4 gap-4">
                 <div>
-                  <h1 className="font-serif text-xl sm:text-2xl font-extrabold text-stone-900 tracking-tight leading-none uppercase">
+                  <h1 className="font-serif text-xl sm:text-2xl font-extrabold text-blue-900 tracking-tight leading-none uppercase">
                     {siteTitle}
                   </h1>
-                  <span className="font-mono text-[10px] sm:text-xs text-stone-500 font-semibold block mt-1.5 uppercase">
+                  <span className="font-mono text-[10px] sm:text-xs text-slate-500 font-semibold block mt-1.5 uppercase">
                     {siteTagline}
                   </span>
                 </div>
                 <div className="text-right sm:text-right flex items-center sm:block">
-                  <span className="font-serif italic text-xs block text-stone-600">
+                  <span className="font-serif italic text-xs block text-slate-600">
                     {activeDate}
                   </span>
                 </div>
@@ -389,8 +389,8 @@ export default function App() {
               {loading ? (
                 // Skeletons / Loader State
                 <div className="flex flex-col items-center justify-center py-24 gap-3">
-                  <RefreshCw className="h-7 w-7 text-stone-700 animate-spin" />
-                  <span className="font-sans text-xs font-semibold text-stone-500">
+                  <RefreshCw className="h-7 w-7 text-slate-700 animate-spin" />
+                  <span className="font-sans text-xs font-semibold text-slate-500">
                     Menghubungkan ke server portal dan mengurai data...
                   </span>
                 </div>
@@ -398,14 +398,14 @@ export default function App() {
                 <>
                   {articles.length === 0 ? (
                     // Empty list state
-                    <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-stone-200">
-                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-stone-100 text-stone-500 mb-4">
+                    <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200">
+                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500 mb-4">
                         <Newspaper className="h-6 w-6" />
                       </div>
-                      <h3 className="font-serif text-lg font-bold text-stone-900">
+                      <h3 className="font-serif text-lg font-bold text-blue-900">
                         Tidak Ada Berita Ditemukan
                       </h3>
-                      <p className="font-sans text-xs text-stone-500 max-w-sm mx-auto mt-1 leading-relaxed">
+                      <p className="font-sans text-xs text-slate-500 max-w-sm mx-auto mt-1 leading-relaxed">
                         {searchQuery.trim()
                           ? `Ulangi pencarian dengan kata kunci lain. Kata kunci "${searchQuery}" tidak menghasilkan kecocokan di database.`
                           : 'Kategori ini belum terisi berita. Silakan berpindah ke menu Redaksi untuk menulis berita pertama.'}
@@ -425,9 +425,9 @@ export default function App() {
 
                       {/* Editorial News list feed */}
                       <div className="space-y-5">
-                        <div className="flex items-center gap-2 border-b border-stone-200 pb-2">
-                          <span className="h-2 w-2 rounded-full bg-stone-900"></span>
-                          <h3 className="font-serif text-lg font-bold text-stone-900">
+                        <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+                          <span className="h-2 w-2 rounded-full bg-blue-600"></span>
+                          <h3 className="font-serif text-lg font-bold text-blue-900">
                             {searchQuery ? `Hasil Pencarian ("${searchQuery}")` : 'Kabar Terkini'}
                           </h3>
                         </div>
@@ -455,17 +455,17 @@ export default function App() {
       </main>
 
       {/* Aesthetic Publishing Footer */}
-      <footer className="border-t border-stone-200 bg-stone-100/50 py-10 mt-16 px-4 sm:px-8 text-center text-stone-500 font-sans text-xs">
+      <footer className="border-t border-slate-200 bg-slate-100/50 py-10 mt-16 px-4 sm:px-8 text-center text-slate-500 font-sans text-xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="space-y-1 text-center md:text-left">
-            <span className="font-serif text-base font-bold tracking-tight text-stone-900 block">
+            <span className="font-serif text-base font-bold tracking-tight text-blue-900 block">
               LINTAS POIN
             </span>
-            <p className="font-sans text-[11px] text-stone-500">
+            <p className="font-sans text-[11px] text-slate-500">
               Web Portal Media Siber dan Berita Nasional Terpercaya.
             </p>
           </div>
-          <p className="font-mono text-[10px] text-stone-400">
+          <p className="font-mono text-[10px] text-slate-400">
             © 2026 Lintas Poin Media. Semua hak cipta dilindungi.
           </p>
         </div>

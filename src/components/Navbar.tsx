@@ -29,21 +29,13 @@ export default function Navbar({
   const [showSettings, setShowSettings] = React.useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-stone-200 bg-stone-50/95 backdrop-blur-md px-4 py-3 sm:px-8">
+    <nav className="sticky top-0 z-50 border-b border-slate-200 bg-slate-50/95 backdrop-blur-md px-4 py-3 sm:px-8">
       <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {/* Brand Logo & Badge */}
         <div className="flex items-center justify-between">
-          <div onClick={() => onNavigate('/')} className="flex items-center gap-3 cursor-pointer group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-stone-900 group-hover:bg-stone-800 text-stone-100 shadow-sm transition-colors">
-              <Newspaper className="h-5.5 w-5.5" />
-            </div>
-            <div>
-              <span className="font-serif text-2xl font-bold tracking-tight text-stone-900 group-hover:text-stone-850 transition-colors">
-                LINTAS POIN
-              </span>
-              <p className="font-mono text-[9px] font-semibold text-stone-500 uppercase tracking-wider">
-                Portal Media &amp; Berita Nusantara
-              </p>
+          <div onClick={() => onNavigate('/')} className="flex items-center cursor-pointer group">
+            <div className="flex h-10 sm:h-12 items-center justify-center overflow-hidden bg-transparent transition-transform group-hover:scale-105">
+              <img src="/logo.png" alt="Lintas Poin Logo" className="h-full w-auto object-contain" />
             </div>
           </div>
 
@@ -51,7 +43,7 @@ export default function Navbar({
             <div className="flex items-center gap-2 sm:hidden">
               <button
                 onClick={() => setShowSettings(!showSettings)}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-stone-200 bg-stone-100 text-stone-600 hover:bg-stone-200"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-slate-600 hover:bg-slate-200"
               >
                 <Settings2 className="h-4 w-4" />
               </button>
@@ -65,14 +57,14 @@ export default function Navbar({
           {currentRole === 'reader' && (
             <div className="relative w-full sm:max-w-xs">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                <Search className="h-4 w-4 text-stone-400" />
+                <Search className="h-4 w-4 text-slate-400" />
               </span>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Cari berita..."
-                className="w-full rounded-lg border border-stone-200 bg-white py-2 pl-9 pr-4 font-sans text-sm text-stone-900 placeholder-stone-400 focus:border-stone-500 focus:ring-1 focus:ring-stone-500 focus:outline-none transition-all"
+                className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-4 font-sans text-sm text-blue-900 placeholder-slate-400 focus:border-slate-500 focus:ring-1 focus:ring-slate-500 focus:outline-none transition-all"
               />
             </div>
           )}
@@ -82,9 +74,9 @@ export default function Navbar({
             <div className="relative hidden sm:block">
               <button
                 onClick={() => setShowSettings(!showSettings)}
-                className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3.5 py-1.8 font-sans text-xs font-medium text-stone-700 hover:bg-stone-50"
+                className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3.5 py-1.8 font-sans text-xs font-medium text-slate-700 hover:bg-slate-50"
               >
-                <Database className="h-3.5 w-3.5 text-stone-600" />
+                <Database className="h-3.5 w-3.5 text-slate-600" />
                 <span>{currentUser ? currentUser.fullname : 'Menu Redaksi'}</span>
                 <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
               </button>
@@ -101,22 +93,22 @@ export default function Navbar({
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-64 rounded-xl border border-stone-200 bg-white p-4 shadow-lg z-20"
+                      className="absolute right-0 mt-2 w-64 rounded-xl border border-slate-200 bg-white p-4 shadow-lg z-20"
                     >
                       {currentUser ? (
                         <div>
-                          <h3 className="font-sans text-xs font-bold text-stone-900">
+                          <h3 className="font-sans text-xs font-bold text-blue-900">
                             Profil Redaktur
                           </h3>
-                          <p className="mt-1 font-sans text-xs text-stone-500 leading-relaxed">
-                            Anda masuk sebagai <strong className="text-stone-800">{currentUser.fullname}</strong> (@{currentUser.username}).
+                          <p className="mt-1 font-sans text-xs text-slate-500 leading-relaxed">
+                            Anda masuk sebagai <strong className="text-orange-600">{currentUser.fullname}</strong> (@{currentUser.username}).
                           </p>
                           <button
                             onClick={() => {
                               onLogout();
                               setShowSettings(false);
                             }}
-                            className="mt-3 flex items-center justify-center gap-2 w-full rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-700 px-3 py-2 font-sans text-xs font-semibold tracking-tight transition-all"
+                            className="mt-3 flex items-center justify-center gap-2 w-full rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 px-3 py-2 font-sans text-xs font-semibold tracking-tight transition-all"
                           >
                             <LogOut className="h-3.5 w-3.5" />
                             <span>Keluar Akun</span>
@@ -124,10 +116,10 @@ export default function Navbar({
                         </div>
                       ) : (
                         <div>
-                          <h3 className="font-sans text-xs font-bold text-stone-900">
+                          <h3 className="font-sans text-xs font-bold text-blue-900">
                             Sistem Lintas Poin
                           </h3>
-                          <p className="mt-1 font-sans text-xs text-stone-500 leading-relaxed">
+                          <p className="mt-1 font-sans text-xs text-slate-500 leading-relaxed">
                             Sistem manajemen konten portal berita nasional yang terintegrasi secara aman.
                           </p>
                         </div>
@@ -135,7 +127,7 @@ export default function Navbar({
                       
                       {currentUser?.role === 'developer' && (
                         <>
-                          <div className="my-3 border-t border-stone-100"></div>
+                          <div className="my-3 border-t border-slate-100"></div>
                           <button
                             disabled={isResetting}
                             onClick={() => {
@@ -166,12 +158,12 @@ export default function Navbar({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="sm:hidden mt-3 border-t border-stone-200 pt-3 flex flex-col gap-2 bg-stone-100 p-3 rounded-lg"
+            className="sm:hidden mt-3 border-t border-slate-200 pt-3 flex flex-col gap-2 bg-slate-100 p-3 rounded-lg"
           >
             {currentUser ? (
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-stone-800 font-sans text-xs font-bold">
-                  <User className="h-4 w-4 text-stone-600" />
+                <div className="flex items-center gap-2 text-orange-600 font-sans text-xs font-bold">
+                  <User className="h-4 w-4 text-slate-600" />
                   <span>Petugas Redaksi: {currentUser.fullname}</span>
                 </div>
                 <button
@@ -179,15 +171,15 @@ export default function Navbar({
                     onLogout();
                     setShowSettings(false);
                   }}
-                  className="flex items-center justify-center gap-2 w-full rounded-lg bg-white border border-stone-200 text-stone-700 py-2 text-xs font-semibold shadow-xs"
+                  className="flex items-center justify-center gap-2 w-full rounded-lg bg-white border border-slate-200 text-slate-700 py-2 text-xs font-semibold shadow-xs"
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   <span>Keluar Akun</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 text-stone-800 font-sans text-xs font-bold">
-                <Database className="h-4 w-4 text-stone-600" />
+              <div className="flex items-center gap-2 text-orange-600 font-sans text-xs font-bold">
+                <Database className="h-4 w-4 text-slate-600" />
                 <span>Media &amp; Berita Nusantara</span>
               </div>
             )}

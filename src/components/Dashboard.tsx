@@ -244,7 +244,7 @@ export default function Dashboard({
 
   // Safe and clean localized parser for Markdown preview
   const parseMarkdownLocal = (text: string) => {
-    if (!text) return <p className="text-stone-400 italic text-xs">Belum ada naskah yang ditulis...</p>;
+    if (!text) return <p className="text-slate-400 italic text-xs">Belum ada naskah yang ditulis...</p>;
     const blocks = text.split('\n\n');
 
     return blocks.map((rawBlock, idx) => {
@@ -262,10 +262,10 @@ export default function Dashboard({
                 src={srcUrl}
                 alt={altText}
                 referrerPolicy="no-referrer"
-                className="w-full max-h-[350px] object-cover rounded-xl border border-stone-200 shadow-xs"
+                className="w-full max-h-[350px] object-cover rounded-xl border border-slate-200 shadow-xs"
               />
               {altText && (
-                <span className="block text-center text-[11px] text-stone-500 font-sans mt-1.5 font-medium bg-stone-50 px-2.5 py-0.5 rounded border border-stone-200/45">
+                <span className="block text-center text-[11px] text-slate-500 font-sans mt-1.5 font-medium bg-slate-50 px-2.5 py-0.5 rounded border border-slate-200/45">
                   📷 {altText}
                 </span>
               )}
@@ -278,7 +278,7 @@ export default function Dashboard({
         return (
           <h3
             key={idx}
-            className="font-serif text-lg sm:text-xl font-bold text-stone-900 mt-6 mb-3 border-b border-stone-100 pb-1"
+            className="font-serif text-lg sm:text-xl font-bold text-blue-900 mt-6 mb-3 border-b border-slate-100 pb-1"
           >
             {block.substring(4)}
           </h3>
@@ -289,7 +289,7 @@ export default function Dashboard({
         return (
           <h4
             key={idx}
-            className="font-serif text-base sm:text-lg font-bold text-stone-800 mt-5 mb-2.5"
+            className="font-serif text-base sm:text-lg font-bold text-orange-600 mt-5 mb-2.5"
           >
             {block.substring(5)}
           </h4>
@@ -301,7 +301,7 @@ export default function Dashboard({
         return (
           <blockquote
             key={idx}
-            className="border-l-4 border-stone-900 bg-stone-50 pl-4 pr-3 py-2.5 my-5 italic text-stone-700 font-serif text-sm leading-relaxed"
+            className="border-l-4 border-blue-600 bg-slate-50 pl-4 pr-3 py-2.5 my-5 italic text-slate-700 font-serif text-sm leading-relaxed"
           >
             "{cleanedQuote}"
           </blockquote>
@@ -313,7 +313,7 @@ export default function Dashboard({
         return (
           <ul
             key={idx}
-            className="list-disc pl-5 my-3.5 space-y-1.5 text-stone-700 text-xs sm:text-sm font-sans"
+            className="list-disc pl-5 my-3.5 space-y-1.5 text-slate-700 text-xs sm:text-sm font-sans"
           >
             {lines.map((line, lidx) => {
               const cleanedLine = line
@@ -333,12 +333,12 @@ export default function Dashboard({
       const parsedHTML = block
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code class="bg-stone-150 px-1.5 py-0.5 rounded font-mono text-stone-800 text-[11px]">$1</code>');
+        .replace(/`(.*?)`/g, '<code class="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-orange-600 text-[11px]">$1</code>');
 
       return (
         <p
           key={idx}
-          className="font-sans text-stone-700 leading-relaxed text-xs sm:text-sm my-3.5"
+          className="font-sans text-slate-700 leading-relaxed text-xs sm:text-sm my-3.5"
           dangerouslySetInnerHTML={{ __html: parsedHTML }}
         ></p>
       );
@@ -554,8 +554,8 @@ export default function Dashboard({
           onClick={() => { setActiveTab('stats'); setFormMode('list'); }}
           className={`flex-1 sm:flex-initial flex items-center gap-2.5 rounded-xl px-4 py-3 font-sans text-xs font-bold transition-all text-left whitespace-nowrap ${
             activeTab === 'stats'
-              ? 'bg-stone-900 text-stone-50 shadow-sm'
-              : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+              ? 'bg-blue-600 text-slate-50 shadow-sm'
+              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
           <BarChart3 className="h-4 w-4" />
@@ -566,8 +566,8 @@ export default function Dashboard({
           onClick={() => { setActiveTab('articles'); setFormMode('list'); }}
           className={`flex-1 sm:flex-initial flex items-center gap-2.5 rounded-xl px-4 py-3 font-sans text-xs font-bold transition-all text-left whitespace-nowrap ${
             activeTab === 'articles'
-              ? 'bg-stone-900 text-stone-50 shadow-sm'
-              : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+              ? 'bg-blue-600 text-slate-50 shadow-sm'
+              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
           <FileText className="h-4 w-4" />
@@ -578,8 +578,8 @@ export default function Dashboard({
           onClick={() => { setActiveTab('categories'); setFormMode('list'); }}
           className={`flex-1 sm:flex-initial flex items-center gap-2.5 rounded-xl px-4 py-3 font-sans text-xs font-bold transition-all text-left whitespace-nowrap ${
             activeTab === 'categories'
-              ? 'bg-stone-900 text-stone-50 shadow-sm'
-              : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+              ? 'bg-blue-600 text-slate-50 shadow-sm'
+              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
           <Tags className="h-4 w-4" />
@@ -591,8 +591,8 @@ export default function Dashboard({
             onClick={() => { setActiveTab('users'); setFormMode('list'); }}
             className={`flex-1 sm:flex-initial flex items-center gap-2.5 rounded-xl px-4 py-3 font-sans text-xs font-bold transition-all text-left whitespace-nowrap ${
               activeTab === 'users'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                ? 'bg-blue-600 text-slate-50 shadow-sm'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
             <UsersIcon className="h-4 w-4" />
@@ -605,8 +605,8 @@ export default function Dashboard({
             onClick={() => { setActiveTab('settings'); setFormMode('list'); }}
             className={`flex-1 sm:flex-initial flex items-center gap-2.5 rounded-xl px-4 py-3 font-sans text-xs font-bold transition-all text-left whitespace-nowrap ${
               activeTab === 'settings'
-                ? 'bg-stone-900 text-stone-50 shadow-sm'
-                : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                ? 'bg-blue-600 text-slate-50 shadow-sm'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
             <Settings className="h-4 w-4" />
@@ -616,7 +616,7 @@ export default function Dashboard({
       </div>
 
       {/* Dashboard Main Display Workspace */}
-      <div className="lg:col-span-9 bg-white rounded-2xl border border-stone-200 p-6 sm:p-8 shadow-xs">
+      <div className="lg:col-span-9 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
         {/* Dynamic Alerts */}
         {successMsg && (
           <div className="mb-6 flex items-center gap-2.5 rounded-lg bg-emerald-50 border border-emerald-100 p-3 text-emerald-800 text-xs font-semibold">
@@ -636,46 +636,46 @@ export default function Dashboard({
         {activeTab === 'stats' && stats && (
           <div className="space-y-8">
             <div className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-stone-850" />
-              <h2 className="font-serif text-xl font-bold text-stone-900">
+              <BarChart3 className="h-5 w-5 text-blue-800" />
+              <h2 className="font-serif text-xl font-bold text-blue-900">
                 Gambaran Kinerja Redaksi
               </h2>
             </div>
 
             {/* Grid statistics highlights */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              <div className="p-5 rounded-xl border border-stone-150 bg-stone-50/50">
-                <span className="font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+              <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <span className="font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                   Total Tulisan Berita
                 </span>
-                <p className="font-serif text-3xl font-extrabold text-stone-900 mt-1">
+                <p className="font-serif text-3xl font-extrabold text-blue-900 mt-1">
                   {stats.totalArticles}
                 </p>
-                <div className="mt-2 text-[10px] font-mono text-stone-400">
+                <div className="mt-2 text-[10px] font-mono text-slate-400">
                   Tersimpan di SQLite Lokal
                 </div>
               </div>
 
-              <div className="p-5 rounded-xl border border-stone-150 bg-stone-50/50">
-                <span className="font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+              <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <span className="font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                   Total Dibaca (Traffic)
                 </span>
-                <p className="font-serif text-3xl font-extrabold text-stone-900 mt-1">
+                <p className="font-serif text-3xl font-extrabold text-blue-900 mt-1">
                   {stats.totalViews}
                 </p>
-                <div className="mt-2 text-[10px] font-mono text-stone-400">
+                <div className="mt-2 text-[10px] font-mono text-slate-400">
                   Akumulasi Kunjungan
                 </div>
               </div>
 
-              <div className="p-5 rounded-xl border border-stone-150 bg-stone-50/50">
-                <span className="font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+              <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/50">
+                <span className="font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                   Total Opini Pembaca
                 </span>
-                <p className="font-serif text-3xl font-extrabold text-stone-900 mt-1">
+                <p className="font-serif text-3xl font-extrabold text-blue-900 mt-1">
                   {stats.totalComments}
                 </p>
-                <div className="mt-2 text-[10px] font-mono text-stone-400">
+                <div className="mt-2 text-[10px] font-mono text-slate-400">
                   Ulasan Aktif Komentar
                 </div>
               </div>
@@ -684,15 +684,15 @@ export default function Dashboard({
             {/* Recharts Traffic Visual Graph */}
             <div className="pt-4">
               <div className="mb-4">
-                <h3 className="font-serif text-base font-bold text-stone-900">
+                <h3 className="font-serif text-base font-bold text-blue-900">
                   Kunjungan per Kategori Berita
                 </h3>
-                <p className="font-sans text-xs text-stone-500">
+                <p className="font-sans text-xs text-slate-500">
                   Menampilkan kategori paling diminati dihitung dari frekuensi pembaca membuka detail naskah berita.
                 </p>
               </div>
 
-              <div className="h-72 w-full border border-stone-200 rounded-xl p-4 bg-stone-50/30">
+              <div className="h-72 w-full border border-slate-200 rounded-xl p-4 bg-slate-50/30">
                 {stats.categoryStats && stats.categoryStats.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -734,7 +734,7 @@ export default function Dashboard({
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="flex h-full items-center justify-center text-stone-400 text-xs">
+                  <div className="flex h-full items-center justify-center text-slate-400 text-xs">
                     Data grafik kosong. Belum ada berita.
                   </div>
                 )}
@@ -750,8 +750,8 @@ export default function Dashboard({
               <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-stone-850" />
-                    <h2 className="font-serif text-xl font-bold text-stone-900">
+                    <FileText className="h-5 w-5 text-blue-800" />
+                    <h2 className="font-serif text-xl font-bold text-blue-900">
                       Kelola Naskah Berita
                     </h2>
                   </div>
@@ -760,7 +760,7 @@ export default function Dashboard({
                       clearArticleForm();
                       setFormMode('add');
                     }}
-                    className="flex justify-center items-center gap-2 rounded-lg bg-stone-900 border border-stone-950 hover:bg-stone-850 px-4 py-2 font-sans text-xs font-bold text-stone-50 tracking-tight transition-all cursor-pointer"
+                    className="flex justify-center items-center gap-2 rounded-lg bg-blue-600 border border-blue-700 hover:bg-blue-700 px-4 py-2 font-sans text-xs font-bold text-slate-50 tracking-tight transition-all cursor-pointer"
                   >
                     <Plus className="h-4 w-4" />
                     Tulis Berita Baru
@@ -768,55 +768,55 @@ export default function Dashboard({
                 </div>
 
                 {/* Table listing */}
-                <div className="overflow-x-auto border border-stone-200 rounded-xl">
+                <div className="overflow-x-auto border border-slate-200 rounded-xl">
                   {articles.length === 0 ? (
-                    <div className="text-center py-10 bg-stone-50">
-                      <p className="font-sans text-xs text-stone-500">
+                    <div className="text-center py-10 bg-slate-50">
+                      <p className="font-sans text-xs text-slate-500">
                         Belum ada berita tercatat. Ketuk tombol di atas untuk menerbitkan berita pertama Anda.
                       </p>
                     </div>
                   ) : (
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-stone-50 border-b border-stone-200 font-sans text-[10px] font-bold uppercase tracking-wider text-stone-500">
+                        <tr className="bg-slate-50 border-b border-slate-200 font-sans text-[10px] font-bold uppercase tracking-wider text-slate-500">
                           <th className="px-5 py-3">Berita</th>
                           <th className="px-5 py-3">Kategori</th>
                           <th className="px-5 py-3 text-center">Dibaca</th>
                           <th className="px-5 py-3 text-right">Aksi</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-stone-150 font-sans text-xs">
+                      <tbody className="divide-y divide-slate-200 font-sans text-xs">
                         {articles.map((art) => (
-                          <tr key={art.id} className="hover:bg-stone-50/50 group">
+                          <tr key={art.id} className="hover:bg-slate-50/50 group">
                             <td className="px-5 py-3.5 max-w-xs sm:max-w-md">
                               <div className="flex items-start gap-3">
                                 <img
                                   src={art.image_url}
                                   alt=""
-                                  className="h-10 w-16 object-cover rounded-md bg-stone-100 flex-shrink-0"
+                                  className="h-10 w-16 object-cover rounded-md bg-slate-100 flex-shrink-0"
                                 />
                                 <div>
-                                  <span className="font-semibold text-stone-900 block group-hover:text-stone-700 leading-snug">
+                                  <span className="font-semibold text-blue-900 block group-hover:text-slate-700 leading-snug">
                                     {art.title}
                                   </span>
-                                  <span className="text-[10px] text-stone-400 mt-1 block">
+                                  <span className="text-[10px] text-slate-400 mt-1 block">
                                     Oleh: {art.author} | {new Date(art.created_at).toLocaleDateString('id-ID')}
                                   </span>
                                 </div>
                               </div>
                             </td>
                             <td className="px-5 py-3.5">
-                              <span className="rounded bg-stone-100 border border-stone-200 px-2 py-0.5 text-[10px] font-semibold text-stone-700">
+                              <span className="rounded bg-slate-100 border border-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-700">
                                 {art.category_name}
                               </span>
                             </td>
-                            <td className="px-5 py-3.5 text-center font-mono font-medium text-stone-600">
+                            <td className="px-5 py-3.5 text-center font-mono font-medium text-slate-600">
                               {art.views}
                             </td>
                             <td className="px-5 py-3.5 text-right space-x-2 whitespace-nowrap">
                               <button
                                 onClick={() => handleEditClick(art)}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-stone-200 bg-white hover:bg-stone-50 text-stone-700 transition"
+                                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition"
                                 title="Edit Berita"
                               >
                                 <Edit3 className="h-3.5 w-3.5" />
@@ -839,12 +839,12 @@ export default function Dashboard({
             ) : (
               // Create or Edit Naskah Form
               <form onSubmit={handleArticleSubmit} className="space-y-6">
-                <div className="flex items-center justify-between border-b border-stone-200 pb-4">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-4">
                   <div>
-                    <h2 className="font-serif text-lg font-bold text-stone-900">
+                    <h2 className="font-serif text-lg font-bold text-blue-900">
                       {formMode === 'add' ? 'Redaksi Naskah Baru' : 'Menyunting Naskah'}
                     </h2>
-                    <p className="font-sans text-xs text-stone-400 mt-0.5">
+                    <p className="font-sans text-xs text-slate-400 mt-0.5">
                       Berita akan langsung dimasukkan ke file SQLite lokal Anda.
                     </p>
                   </div>
@@ -854,7 +854,7 @@ export default function Dashboard({
                       clearArticleForm();
                       setFormMode('list');
                     }}
-                    className="font-sans text-xs font-semibold text-stone-500 hover:text-stone-900"
+                    className="font-sans text-xs font-semibold text-slate-500 hover:text-blue-900"
                   >
                     Batal
                   </button>
@@ -863,7 +863,7 @@ export default function Dashboard({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-4">
                     <div>
-                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                         Judul Berita <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -871,12 +871,12 @@ export default function Dashboard({
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="cth: Perkembangan IoT Lokal Indonesia"
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 font-sans text-sm text-stone-900 focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 transition"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 font-sans text-sm text-blue-900 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 transition"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                         Penulis Berita
                       </label>
                       <input
@@ -884,18 +884,18 @@ export default function Dashboard({
                         value={author}
                         onChange={(e) => setAuthor(e.target.value)}
                         placeholder="cth: Heru Wicaksono"
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 font-sans text-sm text-stone-900 focus:border-stone-500 focus:outline-none"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 font-sans text-sm text-blue-900 focus:border-slate-500 focus:outline-none"
                       />
                     </div>
 
                     <div>
-                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                         Kategori <span className="text-red-500">*</span>
                       </label>
                       <select
                         value={categoryId}
                         onChange={(e) => setCategoryId(e.target.value)}
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 font-sans text-sm text-stone-900 focus:border-stone-500 focus:outline-none"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 font-sans text-sm text-blue-900 focus:border-slate-500 focus:outline-none"
                       >
                         {categories.map((c) => (
                           <option key={c.id} value={c.id}>
@@ -911,9 +911,9 @@ export default function Dashboard({
                         type="checkbox"
                         checked={isFeatured}
                         onChange={(e) => setIsFeatured(e.target.checked)}
-                        className="h-4 w-4 rounded border-stone-300 text-stone-900 focus:ring-stone-500"
+                        className="h-4 w-4 rounded border-slate-300 text-blue-900 focus:ring-slate-500"
                       />
-                      <label htmlFor="is_featured" className="font-sans text-xs font-bold text-stone-700 cursor-pointer">
+                      <label htmlFor="is_featured" className="font-sans text-xs font-bold text-slate-700 cursor-pointer">
                         Sorot Laporan Utama (is_featured)
                       </label>
                     </div>
@@ -922,7 +922,7 @@ export default function Dashboard({
                   {/* Image Handling Column */}
                   <div className="space-y-4">
                     <div>
-                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                      <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                         URL Gambar / Sampul <span className="text-red-500">*</span>
                       </label>
                       <input
@@ -930,26 +930,26 @@ export default function Dashboard({
                         value={imageUrl}
                         onChange={(e) => setImageUrl(e.target.value)}
                         placeholder="Masukkan URL foto atau convert foto lokal di bawah"
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 font-sans text-xs text-stone-900 focus:border-stone-500 focus:outline-none"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 font-sans text-xs text-blue-900 focus:border-slate-500 focus:outline-none"
                       />
                     </div>
 
                     {/* Interactive Realtime Cover Image Preview */}
                     {imageUrl.trim() && (
-                      <div className="rounded-xl border border-stone-250 bg-stone-50 p-3.5 space-y-2.5 shadow-xs transition-all">
-                        <div className="flex items-center justify-between text-[10px] font-bold text-stone-600">
+                      <div className="rounded-xl border border-slate-300 bg-slate-50 p-3.5 space-y-2.5 shadow-xs transition-all">
+                        <div className="flex items-center justify-between text-[10px] font-bold text-slate-600">
                           <span className="flex items-center gap-1 uppercase tracking-wider">
                             🖼️ Pratinjau Sampul Aktif
                           </span>
                           <span className={`px-1.5 py-0.5 rounded font-mono font-bold text-[8px] uppercase ${
                             imageUrl.startsWith('/uploads/') 
                               ? 'bg-emerald-100 text-emerald-800' 
-                              : 'bg-stone-200 text-stone-800'
+                              : 'bg-slate-200 text-orange-600'
                           }`}>
                             {imageUrl.startsWith('/uploads/') ? 'Unggahan Lokal' : 'Tautan/Preset'}
                           </span>
                         </div>
-                        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-stone-100 border border-stone-200 shadow-inner group flex items-center justify-center">
+                        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shadow-inner group flex items-center justify-center">
                           <img
                             src={imageUrl}
                             alt="Sampul Berita Terpasang"
@@ -963,23 +963,23 @@ export default function Dashboard({
                             <button
                               type="button"
                               onClick={() => setImageUrl('')}
-                              className="rounded-lg bg-red-600 hover:bg-red-700 text-stone-50 font-sans text-[10px] font-extrabold px-3 py-1.5 shadow-md flex items-center gap-1 cursor-pointer transition-all uppercase tracking-wider"
+                              className="rounded-lg bg-red-600 hover:bg-red-700 text-slate-50 font-sans text-[10px] font-extrabold px-3 py-1.5 shadow-md flex items-center gap-1 cursor-pointer transition-all uppercase tracking-wider"
                             >
                               Hapus Foto Sampul
                             </button>
                           </div>
                         </div>
-                        <span className="block font-sans text-[10px] text-stone-400 italic truncate" title={imageUrl}>
+                        <span className="block font-sans text-[10px] text-slate-400 italic truncate" title={imageUrl}>
                           Sumber: {imageUrl}
                         </span>
                       </div>
                     )}
 
                     {/* True local offline file conversion and Drag Drop */}
-                    <div className="p-3.5 border border-stone-200 rounded-lg bg-stone-100/50">
-                      <div className="flex items-center justify-between text-[11px] font-bold text-stone-600 mb-2">
+                    <div className="p-3.5 border border-slate-200 rounded-lg bg-slate-100/50">
+                      <div className="flex items-center justify-between text-[11px] font-bold text-slate-600 mb-2">
                         <span className="flex items-center gap-1.5">
-                          <Upload className="h-3.5 w-3.5 text-stone-500" />
+                          <Upload className="h-3.5 w-3.5 text-slate-500" />
                           Unggah File Lokal (Redaksi Siber)
                         </span>
                         {fileLoading && (
@@ -1008,15 +1008,15 @@ export default function Dashboard({
                             processAndUploadFile(file);
                           }
                         }}
-                        className="border-2 border-dashed border-stone-300 hover:border-stone-400 hover:bg-white rounded-lg p-4 text-center cursor-pointer transition-all duration-200"
+                        className="border-2 border-dashed border-slate-300 hover:border-slate-400 hover:bg-white rounded-lg p-4 text-center cursor-pointer transition-all duration-200"
                         onClick={() => !fileLoading && fileInputRef.current?.click()}
                       >
                         <div className="flex flex-col items-center gap-1.5">
-                          <ImageIcon className={`h-6 w-6 ${fileLoading ? 'text-amber-500 animate-spin' : 'text-stone-400'}`} />
-                          <span className="font-sans text-xs font-bold text-stone-700">
+                          <ImageIcon className={`h-6 w-6 ${fileLoading ? 'text-amber-500 animate-spin' : 'text-slate-400'}`} />
+                          <span className="font-sans text-xs font-bold text-slate-700">
                             {fileLoading ? 'Sedang Memuat Foto...' : 'Seret & Jatuhkan / Pilih Gambar'}
                           </span>
-                          <span className="font-sans text-[10px] text-stone-400 block">
+                          <span className="font-sans text-[10px] text-slate-400 block">
                             Mendukung PNG, JPG, WEBP (Maks 8MB)
                           </span>
                         </div>
@@ -1025,7 +1025,7 @@ export default function Dashboard({
 
                     {/* Presets Grid */}
                     <div>
-                      <span className="block font-sans text-[10px] font-bold text-stone-500 mb-1.5 uppercase tracking-wider">
+                      <span className="block font-sans text-[10px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">
                         Atau gunakan Preset Ilustrasi:
                       </span>
                       <div className="grid grid-cols-3 gap-1.5">
@@ -1043,8 +1043,8 @@ export default function Dashboard({
                               }}
                               className={`text-center rounded border p-1.5 font-sans text-[9px] font-extrabold truncate transition-all cursor-pointer ${
                                 isActive 
-                                  ? 'bg-stone-900 border-stone-900 text-stone-50 font-black' 
-                                  : 'bg-white border-stone-200 hover:border-stone-400 text-stone-600 hover:text-stone-900'
+                                  ? 'bg-blue-600 border-blue-600 text-slate-50 font-black' 
+                                  : 'bg-white border-slate-200 hover:border-slate-400 text-slate-600 hover:text-blue-900'
                               }`}
                               title={p.name}
                             >
@@ -1058,7 +1058,7 @@ export default function Dashboard({
                 </div>
 
                 <div>
-                  <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-stone-500 mb-1">
+                  <label className="block font-sans text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
                     Ringkasan Berita <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -1066,27 +1066,27 @@ export default function Dashboard({
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
                     placeholder="Tulis paragraf pengantar singkat berita (summary) yang menarik pembaca..."
-                    className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 font-sans text-sm text-stone-900 focus:border-stone-500 focus:outline-none"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 font-sans text-sm text-blue-900 focus:border-slate-500 focus:outline-none"
                   />
                 </div>
 
-                <div className="border border-stone-200 rounded-xl overflow-hidden shadow-xs bg-stone-50/20">
+                <div className="border border-slate-200 rounded-xl overflow-hidden shadow-xs bg-slate-50/20">
                   {/* Tab Selector & Custom Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-stone-200 bg-stone-50/75 p-3.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-slate-200 bg-slate-50/75 p-3.5">
                     <div className="flex items-center gap-2">
-                      <label className="font-sans text-xs font-extrabold uppercase tracking-widest text-stone-700">
+                      <label className="font-sans text-xs font-extrabold uppercase tracking-widest text-slate-700">
                         Naskah Lengkap <span className="text-red-500">*</span>
                       </label>
                     </div>
 
-                    <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-lg self-start sm:self-auto">
+                    <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg self-start sm:self-auto">
                       <button
                         type="button"
                         onClick={() => setEditorTab('edit')}
                         className={`px-3 py-1.5 rounded-md font-sans text-xs font-bold transition-all ${
                           editorTab === 'edit'
-                            ? 'bg-white text-stone-900 shadow-xs'
-                            : 'text-stone-500 hover:text-stone-850'
+                            ? 'bg-white text-blue-900 shadow-xs'
+                            : 'text-slate-500 hover:text-blue-800'
                         }`}
                       >
                         ✍️ Tulis Berita (Asisten Format)
@@ -1096,8 +1096,8 @@ export default function Dashboard({
                         onClick={() => setEditorTab('preview')}
                         className={`px-3 py-1.5 rounded-md font-sans text-xs font-bold transition-all ${
                           editorTab === 'preview'
-                            ? 'bg-white text-stone-900 shadow-xs'
-                            : 'text-stone-500 hover:text-stone-850'
+                            ? 'bg-white text-blue-900 shadow-xs'
+                            : 'text-slate-500 hover:text-blue-800'
                         }`}
                       >
                         👁️ Pratinjau Tampilan Berita
@@ -1108,63 +1108,63 @@ export default function Dashboard({
                   {editorTab === 'edit' ? (
                     <div className="p-3.5 space-y-3.5 bg-white">
                       {/* Modern formatting toolbar */}
-                      <div className="flex flex-wrap items-center gap-1.5 border-b border-stone-100 pb-3">
+                      <div className="flex flex-wrap items-center gap-1.5 border-b border-slate-100 pb-3">
                         <button
                           type="button"
                           onClick={() => insertFormat('bold')}
-                          className="flex items-center gap-1 rounded bg-stone-50 hover:bg-stone-100 border border-stone-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-stone-700 hover:text-stone-900 shadow-xs cursor-pointer transition-all"
+                          className="flex items-center gap-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-slate-700 hover:text-blue-900 shadow-xs cursor-pointer transition-all"
                           title="Tebalkan Teks"
                         >
-                          <Bold className="h-3.5 w-3.5 text-stone-400" />
+                          <Bold className="h-3.5 w-3.5 text-slate-400" />
                           Tebal
                         </button>
                         <button
                           type="button"
                           onClick={() => insertFormat('italic')}
-                          className="flex items-center gap-1 rounded bg-stone-50 hover:bg-stone-100 border border-stone-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-stone-700 hover:text-stone-900 shadow-xs cursor-pointer transition-all"
+                          className="flex items-center gap-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-slate-700 hover:text-blue-900 shadow-xs cursor-pointer transition-all"
                           title="Miringkan Teks"
                         >
-                          <Italic className="h-3.5 w-3.5 text-stone-400" />
+                          <Italic className="h-3.5 w-3.5 text-slate-400" />
                           Miring
                         </button>
                         <button
                           type="button"
                           onClick={() => insertFormat('h3')}
-                          className="flex items-center gap-1 rounded bg-stone-50 hover:bg-stone-100 border border-stone-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-stone-700 hover:text-stone-900 shadow-xs cursor-pointer transition-all"
+                          className="flex items-center gap-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-slate-700 hover:text-blue-900 shadow-xs cursor-pointer transition-all"
                           title="Tambah Sub Judul / Paragraf Baru"
                         >
-                          <Heading3 className="h-3.5 w-3.5 text-stone-400" />
+                          <Heading3 className="h-3.5 w-3.5 text-slate-400" />
                           Sub-Judul
                         </button>
                         <button
                           type="button"
                           onClick={() => insertFormat('quote')}
-                          className="flex items-center gap-1 rounded bg-stone-50 hover:bg-stone-100 border border-stone-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-stone-700 hover:text-stone-900 shadow-xs cursor-pointer transition-all"
+                          className="flex items-center gap-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-slate-700 hover:text-blue-900 shadow-xs cursor-pointer transition-all"
                           title="Tambah Kutipan Tokoh / Narasumber"
                         >
-                          <Quote className="h-3.5 w-3.5 text-stone-400" />
+                          <Quote className="h-3.5 w-3.5 text-slate-400" />
                           Kutipan
                         </button>
                         <button
                           type="button"
                           onClick={() => insertFormat('list')}
-                          className="flex items-center gap-1 rounded bg-stone-50 hover:bg-stone-100 border border-stone-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-stone-700 hover:text-stone-900 shadow-xs cursor-pointer transition-all"
+                          className="flex items-center gap-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-slate-700 hover:text-blue-900 shadow-xs cursor-pointer transition-all"
                           title="Tambah Daftar Bullet"
                         >
-                          <List className="h-3.5 w-3.5 text-stone-400" />
+                          <List className="h-3.5 w-3.5 text-slate-400" />
                           Poin
                         </button>
                         <button
                           type="button"
                           onClick={() => insertFormat('list-ordered')}
-                          className="flex items-center gap-1 rounded bg-stone-50 hover:bg-stone-100 border border-stone-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-stone-700 hover:text-stone-900 shadow-xs cursor-pointer transition-all"
+                          className="flex items-center gap-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200/60 px-2.5 py-1.5 font-sans text-xs font-bold text-slate-700 hover:text-blue-900 shadow-xs cursor-pointer transition-all"
                           title="Tambah Daftar Angka"
                         >
-                          <ListOrdered className="h-3.5 w-3.5 text-stone-400" />
+                          <ListOrdered className="h-3.5 w-3.5 text-slate-400" />
                           Angka
                         </button>
 
-                        <div className="h-5 w-px bg-stone-250 mx-1"></div>
+                        <div className="h-5 w-px bg-slate-300 mx-1"></div>
 
                         {/* Sisipkan foto di antara teks button */}
                         <button
@@ -1194,13 +1194,13 @@ export default function Dashboard({
                             <button
                               type="button"
                               onClick={() => setShowInsertInlineImage(false)}
-                              className="text-stone-400 hover:text-stone-600 font-sans text-xs font-bold"
+                              className="text-slate-400 hover:text-slate-600 font-sans text-xs font-bold"
                             >
                               Sembunyikan
                             </button>
                           </div>
                           
-                          <p className="font-sans text-[11px] text-stone-500 leading-normal">
+                          <p className="font-sans text-[11px] text-slate-500 leading-normal">
                             Foto akan disisipkan tepat di posisi kursor ketikan Anda berada. Anda bisa mengunggah file foto dari komputer atau menempelkan URL gambar langsung.
                           </p>
 
@@ -1208,7 +1208,7 @@ export default function Dashboard({
                             {/* Upload area or url input */}
                             <div className="space-y-2.5">
                               <div>
-                                <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">
+                                <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
                                   Keterangan / Caption Foto
                                 </label>
                                 <input
@@ -1216,12 +1216,12 @@ export default function Dashboard({
                                   value={inlinePhotoAlt}
                                   onChange={(e) => setInlinePhotoAlt(e.target.value)}
                                   placeholder="cth: Suasana serah terima bantuan pangan"
-                                  className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 font-sans text-xs text-stone-900 focus:outline-none"
+                                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-sans text-xs text-blue-900 focus:outline-none"
                                 />
                               </div>
 
                               <div>
-                                <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">
+                                <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
                                   Gunakan URL atau Tautan Gambar
                                 </label>
                                 <input
@@ -1229,14 +1229,14 @@ export default function Dashboard({
                                   value={inlinePhotoUrl}
                                   onChange={(e) => setInlinePhotoUrl(e.target.value)}
                                   placeholder="https://domain.com/photo.jpg"
-                                  className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 font-sans text-xs text-stone-900 focus:outline-none"
+                                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-sans text-xs text-blue-900 focus:outline-none"
                                 />
                               </div>
                             </div>
 
                             {/* Local upload and upload feedback */}
                             <div className="space-y-2">
-                              <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">
+                              <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
                                 Atau Unggah File Foto dari Komputer
                               </label>
                               <input
@@ -1262,14 +1262,14 @@ export default function Dashboard({
                                       processAndUploadInlineFile(file);
                                     }
                                   }}
-                                  className="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-stone-300 hover:border-amber-400 hover:bg-amber-50/5 p-3.5 font-sans text-center text-xs font-bold text-stone-600 cursor-pointer transition-all"
+                                  className="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-lg border-2 border-dashed border-slate-300 hover:border-amber-400 hover:bg-amber-50/5 p-3.5 font-sans text-center text-xs font-bold text-slate-600 cursor-pointer transition-all"
                                 >
-                                  <Upload className="h-4 w-4 text-stone-400" />
+                                  <Upload className="h-4 w-4 text-slate-400" />
                                   <span>{inlinePhotoLoading ? 'Sedang Memproses...' : 'Pilih Berkas Foto'}</span>
                                 </button>
 
                                 {inlinePhotoUrl && (
-                                  <div className="w-20 h-20 rounded-lg border border-stone-200 overflow-hidden bg-stone-100 flex-shrink-0">
+                                  <div className="w-20 h-20 rounded-lg border border-slate-200 overflow-hidden bg-slate-100 flex-shrink-0">
                                     <img
                                       src={inlinePhotoUrl}
                                       alt=""
@@ -1289,7 +1289,7 @@ export default function Dashboard({
                                 setInlinePhotoAlt('');
                                 setShowInsertInlineImage(false);
                               }}
-                              className="px-3 py-1.5 rounded border border-stone-200 hover:bg-stone-100 font-sans text-xs font-bold text-stone-600 cursor-pointer transition"
+                              className="px-3 py-1.5 rounded border border-slate-200 hover:bg-slate-100 font-sans text-xs font-bold text-slate-600 cursor-pointer transition"
                             >
                               Batal
                             </button>
@@ -1317,33 +1317,33 @@ export default function Dashboard({
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="### Sub-Judul Pertama&#10;Tuliskan isi berita di sini yang menjabarkan seluruh ulasan berita secara analitis...&#10;&#10;Gunakan tombol format di atas untuk menebalkan teks, membuat judul, menyisipkan kutipan, maupun menambahkan foto lokal di sela-sela tulisan secara instan."
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-3 font-sans text-sm text-stone-900 focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 resize-y leading-relaxed"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 font-sans text-sm text-blue-900 focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500 resize-y leading-relaxed"
                       />
                     </div>
                   ) : (
                     /* Elegant Live Preview Screen mockup */
-                    <div className="bg-stone-50/50 p-6 sm:p-8 min-h-[350px] max-h-[500px] overflow-y-auto border-t border-stone-100">
-                      <div className="prose prose-stone max-w-none">
+                    <div className="bg-slate-50/50 p-6 sm:p-8 min-h-[350px] max-h-[500px] overflow-y-auto border-t border-slate-100">
+                      <div className="prose prose-slate max-w-none">
                         {parseMarkdownLocal(content)}
                       </div>
                     </div>
                   )}
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-stone-100">
+                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
                   <button
                     type="button"
                     onClick={() => {
                       clearArticleForm();
                       setFormMode('list');
                     }}
-                    className="rounded-lg border border-stone-200 bg-white hover:bg-stone-50 px-4 py-2 font-sans text-xs font-semibold text-stone-600 transition cursor-pointer"
+                    className="rounded-lg border border-slate-200 bg-white hover:bg-slate-50 px-4 py-2 font-sans text-xs font-semibold text-slate-600 transition cursor-pointer"
                   >
                     Batal
                   </button>
                   <button
                     type="submit"
-                    className="rounded-lg bg-stone-900 border border-stone-950 hover:bg-stone-850 px-5 py-2 font-sans text-xs font-semibold text-stone-100 transition cursor-pointer"
+                    className="rounded-lg bg-blue-600 border border-blue-700 hover:bg-blue-700 px-5 py-2 font-sans text-xs font-semibold text-slate-100 transition cursor-pointer"
                   >
                     {formMode === 'add' ? 'Terbitkan Berita' : 'Simpan Perubahan'}
                   </button>
@@ -1357,8 +1357,8 @@ export default function Dashboard({
         {activeTab === 'categories' && (
           <div className="space-y-8">
             <div className="flex items-center gap-2">
-              <Tags className="h-5 w-5 text-stone-850" />
-              <h2 className="font-serif text-xl font-bold text-stone-900">
+              <Tags className="h-5 w-5 text-blue-800" />
+              <h2 className="font-serif text-xl font-bold text-blue-900">
                 Kelola Kategori Berita
               </h2>
             </div>
@@ -1370,11 +1370,11 @@ export default function Dashboard({
                 value={newCatName}
                 onChange={(e) => setNewCatName(e.target.value)}
                 placeholder="Nama kategori baru..."
-                className="flex-1 rounded-lg border border-stone-200 bg-white px-3 py-2 font-sans text-sm text-stone-900 focus:border-stone-500 focus:outline-none"
+                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 font-sans text-sm text-blue-900 focus:border-slate-500 focus:outline-none"
               />
               <button
                 type="submit"
-                className="flex justify-center items-center gap-1.5 rounded-lg bg-stone-900 border border-stone-950 hover:bg-stone-850 px-4 py-2 font-sans text-xs font-bold text-stone-50 tracking-tight transition-all cursor-pointer"
+                className="flex justify-center items-center gap-1.5 rounded-lg bg-blue-600 border border-blue-700 hover:bg-blue-700 px-4 py-2 font-sans text-xs font-bold text-slate-50 tracking-tight transition-all cursor-pointer"
               >
                 <FolderPlus className="h-4 w-4" />
                 Tambah Kategori
@@ -1382,26 +1382,26 @@ export default function Dashboard({
             </form>
 
             {/* List and counts of active categories */}
-            <div className="border border-stone-200 rounded-xl overflow-hidden max-w-xl">
+            <div className="border border-slate-200 rounded-xl overflow-hidden max-w-xl">
               <table className="w-full text-left border-collapse font-sans text-xs">
                 <thead>
-                  <tr className="bg-stone-50 border-b border-stone-200 font-sans text-[10px] font-bold uppercase tracking-wider text-stone-500">
+                  <tr className="bg-slate-50 border-b border-slate-200 font-sans text-[10px] font-bold uppercase tracking-wider text-slate-500">
                     <th className="px-5 py-3">Nama Kategori</th>
                     <th className="px-5 py-3">Slug (Link)</th>
                     <th className="px-5 py-3 text-center">Jumlah Berita</th>
                     <th className="px-5 py-3 text-right">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-150">
+                <tbody className="divide-y divide-slate-200">
                   {categories.map((cat: any) => (
-                    <tr key={cat.id} className="hover:bg-stone-50/30">
-                      <td className="px-5 py-3 font-semibold text-stone-900">
+                    <tr key={cat.id} className="hover:bg-slate-50/30">
+                      <td className="px-5 py-3 font-semibold text-blue-900">
                         {cat.name}
                       </td>
-                      <td className="px-5 py-3 font-mono text-[10px] text-stone-400">
+                      <td className="px-5 py-3 font-mono text-[10px] text-slate-400">
                         {cat.slug}
                       </td>
-                      <td className="px-5 py-3 text-center font-mono font-bold text-stone-500">
+                      <td className="px-5 py-3 text-center font-mono font-bold text-slate-500">
                         {cat.article_count !== undefined ? cat.article_count : 0}
                       </td>
                       <td className="px-5 py-3 text-right">
@@ -1426,8 +1426,8 @@ export default function Dashboard({
         {activeTab === 'users' && (
           <div className="space-y-8">
             <div className="flex items-center gap-2">
-              <UsersIcon className="h-5 w-5 text-stone-850" />
-              <h2 className="font-serif text-xl font-bold text-stone-900">
+              <UsersIcon className="h-5 w-5 text-blue-800" />
+              <h2 className="font-serif text-xl font-bold text-blue-900">
                 Pendaftaran &amp; Kelola Akun
               </h2>
             </div>
@@ -1447,14 +1447,14 @@ export default function Dashboard({
             )}
 
             {/* Form to submit new Redactor */}
-            <div className="p-5 rounded-xl border border-stone-200 bg-stone-50/50 max-w-xl shadow-xs">
-              <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-stone-700 mb-3">
+            <div className="p-5 rounded-xl border border-slate-200 bg-slate-50/50 max-w-xl shadow-xs">
+              <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
                 Daftarkan Akun Redaksi Baru
               </h3>
               <form onSubmit={handleUserSubmit} className="space-y-3.5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div className="space-y-1">
-                    <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+                    <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                       Nama Lengkap
                     </label>
                     <input
@@ -1462,11 +1462,11 @@ export default function Dashboard({
                       value={newFullname}
                       onChange={(e) => setNewFullname(e.target.value)}
                       placeholder="cth: Akhmad Fauzi"
-                      className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 font-sans text-xs text-stone-900 focus:border-stone-500 focus:outline-none"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-sans text-xs text-blue-900 focus:border-slate-500 focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+                    <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                       Username Kredensial
                     </label>
                     <input
@@ -1474,13 +1474,13 @@ export default function Dashboard({
                       value={newUsername}
                       onChange={(e) => setNewUsername(e.target.value)}
                       placeholder="cth: fauzi_news"
-                      className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 font-sans text-xs text-stone-900 focus:border-stone-500 focus:outline-none"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-sans text-xs text-blue-900 focus:border-slate-500 focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+                  <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                     Kata Sandi Pengaman
                   </label>
                   <input
@@ -1488,12 +1488,12 @@ export default function Dashboard({
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Masukkan sandi..."
-                    className="w-full rounded-lg border border-stone-200 bg-white px-3 py-1.5 font-sans text-xs text-stone-900 focus:border-stone-500 focus:outline-none"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-sans text-xs text-blue-900 focus:border-slate-500 focus:outline-none"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest block">
+                  <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest block">
                     Pilih Peran Anggota Tim
                   </label>
                   <div className={`grid gap-2 mt-1.55 ${currentUser?.role === 'developer' ? 'grid-cols-3' : 'grid-cols-2'}`}>
@@ -1503,8 +1503,8 @@ export default function Dashboard({
                         onClick={() => setNewUserRole('developer')}
                         className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 rounded-lg border py-2 px-1 text-[10px] sm:text-xs font-bold uppercase transition-all cursor-pointer text-center ${
                           newUserRole === 'developer'
-                            ? 'bg-stone-900 text-stone-50 border-stone-900'
-                            : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+                            ? 'bg-blue-600 text-slate-50 border-blue-600'
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
                         <span className="w-2 h-2 rounded-full bg-amber-500"></span>
@@ -1516,8 +1516,8 @@ export default function Dashboard({
                       onClick={() => setNewUserRole('super_admin')}
                       className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 rounded-lg border py-2 px-1 text-[10px] sm:text-xs font-bold uppercase transition-all cursor-pointer text-center ${
                         newUserRole === 'super_admin'
-                          ? 'bg-stone-900 text-stone-50 border-stone-900'
-                          : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+                          ? 'bg-blue-600 text-slate-50 border-blue-600'
+                          : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                       }`}
                     >
                       <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
@@ -1528,8 +1528,8 @@ export default function Dashboard({
                       onClick={() => setNewUserRole('redaktur')}
                       className={`flex flex-col sm:flex-row items-center justify-center gap-1.5 rounded-lg border py-2 px-1 text-[10px] sm:text-xs font-bold uppercase transition-all cursor-pointer text-center ${
                         newUserRole === 'redaktur'
-                          ? 'bg-stone-900 text-stone-50 border-stone-900'
-                          : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+                          ? 'bg-blue-600 text-slate-50 border-blue-600'
+                          : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                       }`}
                     >
                       <span className="w-2 h-2 rounded-full bg-blue-500"></span>
@@ -1540,7 +1540,7 @@ export default function Dashboard({
 
                 <button
                   type="submit"
-                  className="rounded-lg bg-stone-900 border border-stone-950 hover:bg-stone-850 px-4 py-2 font-sans text-xs font-bold text-stone-50 tracking-tight transition-all cursor-pointer block mt-2"
+                  className="rounded-lg bg-blue-600 border border-blue-700 hover:bg-blue-700 px-4 py-2 font-sans text-xs font-bold text-slate-50 tracking-tight transition-all cursor-pointer block mt-2"
                 >
                   Daftarkan Akun
                 </button>
@@ -1549,25 +1549,25 @@ export default function Dashboard({
 
             {/* List and counts of active users */}
             <div>
-              <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-stone-700 mb-3">
+              <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
                 Daftar Akun Terdaftar ({displayedUsers.length})
               </h3>
-              <div className="border border-stone-200 rounded-xl overflow-hidden max-w-xl">
+              <div className="border border-slate-200 rounded-xl overflow-hidden max-w-xl">
                 <table className="w-full text-left border-collapse font-sans text-xs">
                   <thead>
-                    <tr className="bg-stone-50 border-b border-stone-200 font-sans text-[10px] font-bold uppercase tracking-wider text-stone-500">
+                    <tr className="bg-slate-50 border-b border-slate-200 font-sans text-[10px] font-bold uppercase tracking-wider text-slate-500">
                       <th className="px-5 py-3">Nama Lengkap</th>
                       <th className="px-5 py-3">Username</th>
                       <th className="px-5 py-3">Jabatan</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-stone-150 font-sans">
+                  <tbody className="divide-y divide-slate-200 font-sans">
                     {displayedUsers.map((user_row: any) => (
-                      <tr key={user_row.id} className="hover:bg-stone-50/30">
-                        <td className="px-5 py-3 font-semibold text-stone-900">
+                      <tr key={user_row.id} className="hover:bg-slate-50/30">
+                        <td className="px-5 py-3 font-semibold text-blue-900">
                           {user_row.fullname}
                         </td>
-                        <td className="px-5 py-3 font-mono text-[11px] text-stone-500">
+                        <td className="px-5 py-3 font-mono text-[11px] text-slate-500">
                           @{user_row.username}
                         </td>
                         <td className="px-5 py-3">
@@ -1600,13 +1600,13 @@ export default function Dashboard({
         {activeTab === 'settings' && (
           <div className="space-y-8">
             <div className="flex items-center gap-2">
-              <Settings className="h-5 w-5 text-stone-850" />
-              <h2 className="font-serif text-xl font-bold text-stone-900">
+              <Settings className="h-5 w-5 text-blue-800" />
+              <h2 className="font-serif text-xl font-bold text-blue-900">
                 Pengaturan Identitas Portal Siber
               </h2>
             </div>
 
-            <p className="font-sans text-xs text-stone-500 leading-relaxed max-w-2xl">
+            <p className="font-sans text-xs text-slate-500 leading-relaxed max-w-2xl">
               Gunakan formulir ini untuk mengubah nama edisi utama dan tagline media pers Anda. Perubahan ini disimpan secara permanen di database lokal SQLite dan akan langsung diperbarui di bagian atas halaman depan pembaca.
             </p>
 
@@ -1626,9 +1626,9 @@ export default function Dashboard({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Form Input */}
-              <form onSubmit={handleSettingsSubmit} className="space-y-4 rounded-xl border border-stone-200 bg-stone-50/50 p-5 shadow-xs">
+              <form onSubmit={handleSettingsSubmit} className="space-y-4 rounded-xl border border-slate-200 bg-slate-50/50 p-5 shadow-xs">
                 <div>
-                  <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
+                  <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
                     Judul Edisi Utama / Nama Situs <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -1637,15 +1637,15 @@ export default function Dashboard({
                     value={localSiteTitle}
                     onChange={(e) => setLocalSiteTitle(e.target.value)}
                     placeholder="cth: Edisi Utama"
-                    className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2 font-sans text-xs text-stone-900 focus:border-stone-500 focus:outline-none"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 font-sans text-xs text-blue-900 focus:border-slate-500 focus:outline-none"
                   />
-                  <span className="font-sans text-[10px] text-stone-400 mt-1 block">
+                  <span className="font-sans text-[10px] text-slate-400 mt-1 block">
                     Nama headline besar di sisi kiri atas.
                   </span>
                 </div>
 
                 <div>
-                  <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">
+                  <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
                     Tagline Redaksi &amp; Pers <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -1654,9 +1654,9 @@ export default function Dashboard({
                     value={localSiteTagline}
                     onChange={(e) => setLocalSiteTagline(e.target.value)}
                     placeholder="cth: Redaksi Independen Lintas Poin • Media Siber & Pers"
-                    className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2 font-sans text-xs text-stone-850 focus:border-stone-500 focus:outline-none"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 font-sans text-xs text-blue-800 focus:border-slate-500 focus:outline-none"
                   />
-                  <span className="font-sans text-[10px] text-stone-400 mt-1 block">
+                  <span className="font-sans text-[10px] text-slate-400 mt-1 block">
                     Keterangan kecil kredensial pers atau slogan di bawah judul siber.
                   </span>
                 </div>
@@ -1665,7 +1665,7 @@ export default function Dashboard({
                   <button
                     type="submit"
                     disabled={settingsLoading}
-                    className="w-full sm:w-auto rounded-lg bg-stone-900 hover:bg-stone-850 border border-stone-950 px-4.5 py-2.5 font-sans text-xs font-bold text-stone-50 tracking-tight transition-all cursor-pointer disabled:opacity-50"
+                    className="w-full sm:w-auto rounded-lg bg-blue-600 hover:bg-blue-700 border border-blue-700 px-4.5 py-2.5 font-sans text-xs font-bold text-slate-50 tracking-tight transition-all cursor-pointer disabled:opacity-50"
                   >
                     {settingsLoading ? 'Sedang Menyimpan...' : 'Simpan Perubahan'}
                   </button>
@@ -1675,25 +1675,25 @@ export default function Dashboard({
               {/* Live Preview Box */}
               <div className="flex flex-col h-full justify-between">
                 <div>
-                  <label className="block font-sans text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-2">
+                  <label className="block font-sans text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">
                     Pratinjau Tampilan Header Homepage
                   </label>
-                  <div className="border border-dashed border-stone-300 rounded-xl bg-white p-5 shadow-xs relative overflow-hidden min-h-[140px] flex flex-col justify-center">
-                    <span className="absolute top-2 right-2 text-[8px] uppercase tracking-widest bg-stone-100 text-stone-400 font-bold px-1.5 py-0.5 rounded">
+                  <div className="border border-dashed border-slate-300 rounded-xl bg-white p-5 shadow-xs relative overflow-hidden min-h-[140px] flex flex-col justify-center">
+                    <span className="absolute top-2 right-2 text-[8px] uppercase tracking-widest bg-slate-100 text-slate-400 font-bold px-1.5 py-0.5 rounded">
                       Live Preview
                     </span>
 
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-stone-800 pb-3 gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between border-b-2 border-blue-800 pb-3 gap-2">
                       <div>
-                        <h2 className="font-serif text-lg font-extrabold text-stone-900 tracking-tight leading-none uppercase">
+                        <h2 className="font-serif text-lg font-extrabold text-blue-900 tracking-tight leading-none uppercase">
                           {localSiteTitle || 'Tanpa Nama'}
                         </h2>
-                        <span className="font-mono text-[9px] text-stone-500 font-semibold block mt-1 uppercase leading-normal">
+                        <span className="font-mono text-[9px] text-slate-500 font-semibold block mt-1 uppercase leading-normal">
                           {localSiteTagline || 'Tanpa Tagline'}
                         </span>
                       </div>
                       <div className="text-right sm:text-right">
-                        <span className="font-serif italic text-[10px] block text-stone-500">
+                        <span className="font-serif italic text-[10px] block text-slate-500">
                           {new Date().toLocaleDateString('id-ID', {
                             weekday: 'long',
                             year: 'numeric',
@@ -1706,11 +1706,11 @@ export default function Dashboard({
                   </div>
                 </div>
 
-                <div className="mt-4 p-4 rounded-xl bg-stone-50 border border-stone-200 text-stone-600 space-y-2">
-                  <span className="font-sans text-[10px] font-bold text-stone-700 uppercase tracking-widest block">
+                <div className="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 text-slate-600 space-y-2">
+                  <span className="font-sans text-[10px] font-bold text-slate-700 uppercase tracking-widest block">
                     💡 Informasi Tambahan
                   </span>
-                  <p className="font-sans text-[11px] leading-normal text-stone-500">
+                  <p className="font-sans text-[11px] leading-normal text-slate-500">
                     Sistem akan menyinkronkan data judul dan slogan ini secara dinamis. Header ini akan tercermin langsung baik saat pembaca membuka lewat handphone, tablet, maupun komputer.
                   </p>
                 </div>
