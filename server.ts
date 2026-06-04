@@ -899,22 +899,25 @@ async function handleServeHtml(req: any, res: any, meta: PageMetadata) {
   `;
 
   // Ganti tag placeholder dan title di index.html dengan meta tags lengkap kita
+  // Hapus semua default og: meta tags agar WhatsApp/bot tidak mengambil yang default
+  html = html.replace(/<meta property="?og:[^>]+>/g, '');
+  html = html.replace(/<title>.*?<\/title>/, '');
+  
   if (html.includes('<!-- META_TAGS_PLACEHOLDER -->')) {
-    html = html.replace(/<title>.*?<\/title>/, '');
     html = html.replace('<!-- META_TAGS_PLACEHOLDER -->', metaTags);
-  } else if (html.includes('<title>')) {
-    html = html.replace(/<title>.*?<\/title>/, metaTags);
   } else {
     html = html.replace('</head>', `${metaTags}\n</head>`);
   }
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('X-Lintas-Debug', 'true');
   res.send(html);
 }
 
 // Tangani rute detail berita khusus agar memiliki metadata WhatsApp preview
 app.get('/article/:slug', async (req, res, next) => {
   const { slug } = req.params;
+  console.log('--- Incoming article request ---', req.url, 'Slug:', slug);
   try {
     const article = await dbGet(`
       SELECT a.*, c.name as category_name
@@ -924,8 +927,11 @@ app.get('/article/:slug', async (req, res, next) => {
     `, [slug]);
 
     if (!article) {
+      console.log('Article not found in DB for slug:', slug);
       return next(); // Jika tidak ada artikel, teruskan ke default router
     }
+
+    console.log('Article FOUND in DB:', article.title);
 
     // Tentukan URL absolut untuk artikel dan gambar
     const protocol = (req.secure || req.headers['x-forwarded-proto'] === 'https') ? 'https' : 'http';
@@ -971,6 +977,7 @@ app.get('/article/:slug', async (req, res, next) => {
 
 // Tangani rute beranda / agar metadata WhatsApp preview untuk link induk muncul
 app.get(['/', '/admin'], async (req, res, next) => {
+  console.log('--- Incoming index request ---', req.url);
   try {
     // Ambil setting site_title dan site_tagline
     const siteTitleCheck = await dbGet(`SELECT value FROM settings WHERE key = 'site_title'`);
@@ -1032,6 +1039,10 @@ async function startServer() {
       appType: "spa",
     });
     globalViteInstance = vite;
+    app.use((req, res, next) => {
+      console.log('--- Vite Middleware intercepted ---', req.url);
+      next();
+    });
     app.use(vite.middlewares);
     console.log('Vite development server middleware loaded.');
   } else {
@@ -1061,6 +1072,7 @@ async function startServer() {
         };
         await handleServeHtml(req, res, metadata);
       } catch (err) {
+        res.setHeader('X-Lintas-Fallback', 'true');
         res.sendFile(path.resolve(distPath, 'index.html'));
       }
     });
